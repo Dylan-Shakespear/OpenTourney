@@ -27,8 +27,6 @@ load_dotenv()
 # Get SECRET_KEY from environment variable or fall back to default value
 SECRET_KEY = os.getenv('SECRET_KEY', 'mysecretkey')
 
-print(f"SECRET_KEY: {SECRET_KEY}")
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -124,8 +122,14 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+# LOGIN_REDIRECT_URL = 'home'
+# LOGIN_URL = 'login'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'Pictures')
+# MEDIA_URL = '/Images/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
