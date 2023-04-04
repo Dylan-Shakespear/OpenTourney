@@ -20,4 +20,5 @@ from Tournament import views as tournament_views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', tournament_views.home),
+    path('tourney/', tournament_views.tourney),
 ]
