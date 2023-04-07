@@ -1,68 +1,41 @@
 {% extends "base.html" %}
 {% block body %}
+<h1>{{ tourney.name }}</h1>
 <div class="container">
     <div class="bracket">
-        <div class="round round-one">
-            <button class="matchup btn">
-                <div class="team team-top">Team 1</div>
-                <div class="team team-bottom">Team 16</div>
-            </button>
-            <div class="matchup">
-                <div class="team team-top">Team 8</div>
-                <div class="team team-bottom">Team 9</div>
+        {% for i in rounds.rounds %}
+            {% if forloop.counter0 == 0 %}
+                <div class="round round-one">
+            {% endif %}
+            {% if forloop.counter0 == 1 %}
+                <div class="round round-two">
+            {% endif %}
+            {% if forloop.counter0 == 2 %}
+                <div class="round round-three">
+            {% endif %}
+            {% if forloop.counter0 == 3 %}
+                <div class="round round-four">
+            {% endif %}
+            {% if forloop.counter0 == 4 %}
+                <div class="round round-five">
+            {% endif %}
+            {% if forloop.counter0 == 5 %}
+                <div class="round round-six">
+            {% endif %}
+            {% if forloop.counter0 == 6 %}
+                <div class="round round-seven">
+            {% endif %}
+            {% if forloop.counter0 == 7 %}
+                <div class="round round-eight">
+            {% endif %}
+            {% for i in ''|center:i %}
+                <button class="matchup btn">
+                    <div class="team team-top">Team 1</div>
+                    <div class="team team-bottom">Team 16</div>
+                </button>
+            {% endfor %}
             </div>
-            <div class="matchup">
-                <div class="team team-top">Team 5</div>
-                <div class="team team-bottom">Team 12</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Team 4</div>
-                <div class="team team-bottom">Team 13</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Team 6</div>
-                <div class="team team-bottom">Team 11</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Team 3</div>
-                <div class="team team-bottom">Team 14</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Team 7</div>
-                <div class="team team-bottom">Team 10</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Team 2</div>
-                <div class="team team-bottom">Team 15</div>
-            </div>
-        </div>
-        <div class="round round-two">
-            <div class="matchup">
-                <div class="team team-top">Winner 1-16</div>
-                <div class="team team-bottom">Winner 8-9</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Winner 5-12</div>
-                <div class="team team-bottom">Winner 4-13</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Winner 6-11</div>
-                <div class="team team-bottom">Winner 3-14</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Winner 7-10</div>
-                <div class="team team-bottom">Winner 2-15</div>
-            </div>
-        </div>
-        <div class="round round-three">
-            <div class="matchup">
-                <div class="team team-top">Winner 1-16-8-9</div>
-                <div class="team team-bottom">Winner 5-12-4-13</div>
-            </div>
-            <div class="matchup">
-                <div class="team team-top">Winner 6-11-3</div>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 </div>
 {% endblock %}

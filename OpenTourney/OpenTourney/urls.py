@@ -21,4 +21,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', tournament_views.home),
     path('tourney/', tournament_views.tourney),
+    path('tourney/<int:tourney_id>', tournament_views.tourney_main, name="tourney"),
 ]
