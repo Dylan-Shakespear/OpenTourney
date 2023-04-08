@@ -14,8 +14,7 @@ def tourney(request):
 
 def tourney_main(request, tourney_id):
     this_tourney = TournamentObject.objects.get(pk=tourney_id)
-    rounds = Rounds(this_tourney.num_teams)
-    print(Rounds.rounds)
+    rounds = Rounds(this_tourney)
     context = {
         'tourney': this_tourney,
         'rounds': rounds,

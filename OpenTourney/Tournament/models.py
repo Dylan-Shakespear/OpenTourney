@@ -41,11 +41,11 @@ class Team(models.Model):
 
 
 class Match(models.Model):
-    name = models.CharField(max_length=255)
-    description = models.TextField()
-    date = models.DateTimeField()
-    team1 = models.ForeignKey(Team, related_name='matches_as_team1', on_delete=models.CASCADE)
-    team2 = models.ForeignKey(Team, related_name='matches_as_team2', on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, null=True)
+    description = models.TextField(null=True)
+    date = models.DateTimeField(null=True)
+    team1 = models.ForeignKey(Team, related_name='matches_as_team1', on_delete=models.CASCADE, null=True)
+    team2 = models.ForeignKey(Team, related_name='matches_as_team2', on_delete=models.CASCADE, null=True)
     tournament = models.ForeignKey(TournamentObject, on_delete=models.CASCADE, related_name='matches')
     round = models.IntegerField()
 

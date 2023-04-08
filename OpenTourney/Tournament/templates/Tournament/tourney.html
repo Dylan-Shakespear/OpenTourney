@@ -3,7 +3,7 @@
 <h1>{{ tourney.name }}</h1>
 <div class="container">
     <div class="bracket">
-        {% for i in rounds.rounds %}
+        {% for round in rounds.rounds %}
             {% if forloop.counter0 == 0 %}
                 <div class="round round-one">
             {% endif %}
@@ -28,10 +28,10 @@
             {% if forloop.counter0 == 7 %}
                 <div class="round round-eight">
             {% endif %}
-            {% for i in ''|center:i %}
+            {% for match in round.matches %}
                 <button class="matchup btn">
-                    <div class="team team-top">Team 1</div>
-                    <div class="team team-bottom">Team 16</div>
+                    <div class="team team-top">{{ match.team_1 }}</div>
+                    <div class="team team-bottom">{{ match.team_2 }}</div>
                 </button>
             {% endfor %}
             </div>
