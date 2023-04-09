@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block body %}
+<div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="name">Tournament Name</label>
+            <input type="text" class="form-control" id="name" name="name">
+        </div>
+        <div class="form-group">
+            <label for="type">Tournament Type</label>
+            <select class="form-control" id="type" name="type">
+                <option value="single">Single Elimination</option>
+                <option value="double">Double Elimination</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="teams">Number of Teams</label>
+                <select class="form-control" id="teams" name="teams">
+                    <option value="2">2</option>
+                    <option value="4">4</option>
+                    <option value="8">8</option>
+                    <option value="16">16</option>
+                    <option value="32">32</option>
+                    <option value="64">64</option>
+                    <option value="128">128</option>
+                </select>
+        </div>
+        <div class="form-group">
+            <label for="desc">Tournament Description (Optional)</label>
+            <textarea class="form-control" id="desc" name="desc"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+    </form>
+</div>
+{% endblock %}

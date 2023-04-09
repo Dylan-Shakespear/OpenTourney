@@ -19,7 +19,8 @@ from Tournament import views as tournament_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', tournament_views.home),
+    path('', tournament_views.home, name="index"),
     path('tourney/', tournament_views.tourney),
     path('tourney/<int:tourney_id>', tournament_views.tourney_main, name="tourney"),
+    path('tourney/new', tournament_views.new_tourney, name="new"),
 ]

@@ -20,3 +20,15 @@ def tourney_main(request, tourney_id):
         'rounds': rounds,
     }
     return render(request, 'Tournament/tourney.html', context)
+
+
+def new_tourney(request):
+    if request.method == 'POST':
+        name = request.POST.get('name', '')
+        tournament_type = request.POST.get('type', '')
+        teams = request.POST.get('teams', '')
+        desc = request.POST.get('desc', '')
+        created_tourney = TournamentObject(name=name, tournament_type=tournament_type, num_teams=teams,
+                                           description=desc)
+        created_tourney.save()
+    return render(request, 'Tournament/new.html', {})
