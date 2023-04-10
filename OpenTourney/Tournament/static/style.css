@@ -56,3 +56,42 @@
 .matchup:last-child:after {
     display: none;
 }
+
+body {
+     background-color: dimgray !important;
+}
+
+.navbar {
+    z-index: 2;
+}
+
+.page {
+    position: fixed;
+    top: 55px; /* The height of the navbar */
+    left: 10%;
+    right: 10%;
+    bottom: 0;
+    padding: 20px;
+    background-color: white;
+    overflow-y: auto;
+}
+
+/* Page Transition Animation CSS */
+
+#animation-page {
+    transition: all 0.5s ease;
+}
+
+#animation-page.out {
+    transform: translateY(100%);
+    opacity: 0;
+}
+#animation-page.in {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+#animation-page.show {
+    transform: translateY(0%);
+    opacity: 1;
+}
+
