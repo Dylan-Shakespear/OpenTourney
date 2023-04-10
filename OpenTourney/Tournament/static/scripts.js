@@ -15,8 +15,8 @@ $(document).on('click', 'a', function(event) {
                     $('#animation-page').html(newContent);
                     setTimeout(function() {
                         window.location.href = url;
-                    }, 500);
-                }, 500);
+                    }, 400);
+                }, 400);
             }
         });
     }

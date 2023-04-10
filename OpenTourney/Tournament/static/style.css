@@ -58,11 +58,34 @@
 }
 
 body {
-     background-color: dimgray !important;
+     background-color: black !important;
+     background-image: url("images/background.png");
+     background-size: 100%;
+     background-repeat: no-repeat;
+     background-position: center;
+     height: 100vh;
+}
+
+.nav-logo {
+    margin-left:10px;
+    margin-right:20px;
 }
 
 .navbar {
     z-index: 2;
+}
+
+.form-inline .form-group {
+  display: inline-block;
+  margin-right: 10px;
+}
+
+.form-inline.flex-fill {
+    flex: 1;
+}
+
+.nav-form {
+    margin-right: 5vw;
 }
 
 .page {
@@ -79,7 +102,7 @@ body {
 /* Page Transition Animation CSS */
 
 #animation-page {
-    transition: all 0.5s ease;
+    transition: all 0.4s ease;
 }
 
 #animation-page.out {
