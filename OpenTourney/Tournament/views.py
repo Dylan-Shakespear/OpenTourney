@@ -1,4 +1,6 @@
 import sys
+
+from django.db.models import Q
 from django.shortcuts import render
 from .models import TournamentObject
 from .utils import Rounds
@@ -51,5 +53,13 @@ def new_tourney(request):
 
 
 def tourney_listings(request):
-    tourneys = (TournamentObject.objects.filter(user=request.user))
+    tourneys = TournamentObject.objects.filter(user=request.user)
+    query = request.GET.get('search')
+    if query != '' and query is not None:
+        tourneys = TournamentObject.objects.filter(
+            (Q(name__icontains=query) |
+             Q(description__icontains=query)) & (
+                    Q(user=request.user) |
+                    Q(public=True)))
+
     return render(request, 'Tournament/listings.html', {'tourneys': tourneys})

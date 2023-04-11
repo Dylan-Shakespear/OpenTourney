@@ -31,9 +31,9 @@
                     <a class="nav-link" href="{% url 'new' %}">New Tourney</a>
                 </li>
             </ul>
-            <form class="form-inline nav-form">
+            <form class="form-inline nav-form" action="{% url 'listings' %}" method="GET">
                 <div class="form-group">
-                  <input size="50" type="text" class="form-control" placeholder="Search...">
+                  <input size="50" type="search" class="form-control" name="search" placeholder="Search...">
                 </div>
                 <button type="submit" class="btn btn-outline-light">Search</button>
             </form>
