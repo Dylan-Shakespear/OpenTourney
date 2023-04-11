@@ -28,7 +28,12 @@ def new_tourney(request):
         tournament_type = request.POST.get('type', '')
         teams = request.POST.get('teams', '')
         desc = request.POST.get('desc', '')
+        public_choice = request.POST.get('public', '')
+        if public_choice == "public":
+            public = True
+        else:
+            public = False
         created_tourney = TournamentObject(name=name, tournament_type=tournament_type, num_teams=teams,
-                                           description=desc)
+                                           description=desc, public=public, user=request.user)
         created_tourney.save()
     return render(request, 'Tournament/new.html', {})

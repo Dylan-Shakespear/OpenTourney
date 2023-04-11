@@ -17,6 +17,8 @@ class TournamentObject(models.Model):
     description = models.TextField(blank=True)
     num_teams = models.IntegerField()
     tournament_type = models.CharField(max_length=2, choices=TOURNAMENT_TYPES, default=SINGLE_ELIMINATION)
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='tourney')
+    public = models.BooleanField(default=False)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -24,7 +26,7 @@ class TournamentObject(models.Model):
 
 class Team(models.Model):
     name = models.CharField(max_length=255)
-    user = models.OneToOneField(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='team')
+    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='team')
     tournament = models.ForeignKey(TournamentObject, on_delete=models.CASCADE, related_name='teams')
     position = models.IntegerField()
 
