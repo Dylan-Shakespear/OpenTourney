@@ -13,11 +13,11 @@ class TournamentObject(models.Model):
     def __str__(self):
         return self.name
 
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, default="My Tournament")
     description = models.TextField(blank=True)
-    num_teams = models.IntegerField()
+    num_teams = models.IntegerField(default=16)
     tournament_type = models.CharField(max_length=2, choices=TOURNAMENT_TYPES, default=SINGLE_ELIMINATION)
-    user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='tourney')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tourney')
     public = models.BooleanField(default=False)
 
     def __init__(self, *args, **kwargs):

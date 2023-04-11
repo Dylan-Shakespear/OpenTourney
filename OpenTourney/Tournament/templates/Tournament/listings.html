@@ -1,0 +1,18 @@
+{% extends "base.html" %} {% block body %}
+{% for tourney in tourneys %}
+<div class="card" style="width: 40vw;">
+    <div class="card-body">
+        <h4 class="card-title">{{ tourney.name }}</h4>
+        {% if tourney.public %}
+            <h5>Public</h5>
+        {% else %}
+            <h5>Private</h5>
+        {% endif %}
+        <p class="card-text">{{ tourney.desc }}</p>
+        <p class="card-text">Number of Teams: {{ tourney.num_teams }} - Tournament Type: {{ tourney.tournament_type }}</p>
+        <a href="{% url 'tourney' tourney.id %}" class="btn btn-primary">Open</a>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
+
