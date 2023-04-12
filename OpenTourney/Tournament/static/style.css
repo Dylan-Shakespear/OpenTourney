@@ -1,60 +1,91 @@
 .bracket {
     display: flex;
     flex-direction: row;
-    align-items: center;
-}
-
-.round {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 10px;
+    align-items: left;
 }
 
 .round-one > .matchup {
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 10px;
 }
 
 .round-two > .matchup {
+    margin-bottom: 125px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 80px;
+}
+
+.round-two {
+    margin-top: 55px;
 }
 
 .round-three > .matchup {
+    margin-bottom: 355px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 240px;
-    margin-bottom: 240px;
+}
+
+.round-three {
+    margin-top: 165px;
 }
 
 .round-four > .matchup {
+    margin-bottom: 800px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-top: 240px;
-    margin-bottom: 240px;
 }
+
+.round-four {
+    margin-top: 400px;
+}
+
+.round-five > .matchup {
+    margin-bottom: 1750px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.round-five {
+    margin-top: 800px;
+}
+
+.round-six > .matchup {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.round-six {
+    margin-top: 1700px;
+}
+
+.round {
+    margin-right: 15px;
+}
+
+
 
 .team {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 50px;
-    width: 200px;
+    height: 35px;
+    width: 250px;
     border: 1px solid #ccc;
     padding: 5px;
-    margin: 5px;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 20px;
 }
 
-.matchup:last-child:after {
-    display: none;
+.matchup:last-child {
+    margin-bottom: 0px !important;
 }
 
 body {

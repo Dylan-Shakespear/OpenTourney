@@ -49,6 +49,8 @@ def new_tourney(request):
         created_tourney = TournamentObject(name=name, tournament_type=tournament_type, num_teams=teams,
                                            description=desc, public=public, user=request.user)
         created_tourney.save()
+
+        return tourney_main(request, created_tourney.id)
     return render(request, 'Tournament/new.html', {})
 
 

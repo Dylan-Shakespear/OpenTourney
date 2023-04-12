@@ -1,41 +1,39 @@
 {% extends "base.html" %}
 {% block body %}
 <h1>{{ tourney.name }}</h1>
-<div class="container">
-    <div class="bracket">
-        {% for round in rounds.rounds %}
-            {% if forloop.counter0 == 0 %}
-                <div class="round round-one">
-            {% endif %}
-            {% if forloop.counter0 == 1 %}
-                <div class="round round-two">
-            {% endif %}
-            {% if forloop.counter0 == 2 %}
-                <div class="round round-three">
-            {% endif %}
-            {% if forloop.counter0 == 3 %}
-                <div class="round round-four">
-            {% endif %}
-            {% if forloop.counter0 == 4 %}
-                <div class="round round-five">
-            {% endif %}
-            {% if forloop.counter0 == 5 %}
-                <div class="round round-six">
-            {% endif %}
-            {% if forloop.counter0 == 6 %}
-                <div class="round round-seven">
-            {% endif %}
-            {% if forloop.counter0 == 7 %}
-                <div class="round round-eight">
-            {% endif %}
-            {% for match in round.matches %}
-                <button class="matchup btn">
-                    <div class="team team-top">{{ match.team_1 }}</div>
-                    <div class="team team-bottom">{{ match.team_2 }}</div>
-                </button>
-            {% endfor %}
-            </div>
+<div class="bracket">
+    {% for round in rounds.rounds %}
+        {% if forloop.counter0 == 0 %}
+            <div class="round round-one">
+        {% endif %}
+        {% if forloop.counter0 == 1 %}
+            <div class="round round-two">
+        {% endif %}
+        {% if forloop.counter0 == 2 %}
+            <div class="round round-three">
+        {% endif %}
+        {% if forloop.counter0 == 3 %}
+            <div class="round round-four">
+        {% endif %}
+        {% if forloop.counter0 == 4 %}
+            <div class="round round-five">
+        {% endif %}
+        {% if forloop.counter0 == 5 %}
+            <div class="round round-six">
+        {% endif %}
+        {% if forloop.counter0 == 6 %}
+            <div class="round round-seven">
+        {% endif %}
+        {% if forloop.counter0 == 7 %}
+            <div class="round round-eight">
+        {% endif %}
+        {% for match in round.matches %}
+            <button class="matchup btn">
+                <div class="team team-top">{{ match.team_1 }}</div>
+                <div class="team team-bottom">{{ match.team_2 }}</div>
+            </button>
         {% endfor %}
-    </div>
+        </div>
+    {% endfor %}
 </div>
 {% endblock %}
