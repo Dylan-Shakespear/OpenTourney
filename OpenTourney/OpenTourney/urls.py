@@ -24,4 +24,5 @@ urlpatterns = [
     path('tourney/<int:tourney_id>', tournament_views.tourney_main, name="tourney"),
     path('tourney/new', tournament_views.new_tourney, name="new"),
     path('tourney/tournaments', tournament_views.tourney_listings, name="listings"),
+    path('tourney/edit_match/<int:match_not_unique_id>/<int:tourney_id>', tournament_views.edit_match, name="editmatch"),
 ]

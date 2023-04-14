@@ -11,6 +11,8 @@ class TournamentObject(models.Model):
     ]
 
     def __str__(self):
+        if self.name is None:
+            return "Empty"
         return self.name
 
     name = models.CharField(max_length=100, default="My Tournament")
@@ -28,15 +30,11 @@ class Team(models.Model):
     name = models.CharField(max_length=255)
     user = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL, related_name='team')
     tournament = models.ForeignKey(TournamentObject, on_delete=models.CASCADE, related_name='teams')
-    position = models.IntegerField()
 
     def __str__(self):
+        if self.name is None:
+            return "Empty"
         return self.name
-
-    class Meta:
-        # The position (aka seed) must be unique for a Team within a given Tournament
-        # Ex. There can't be 2 #1 seeds
-        unique_together = (('tournament', 'position'),)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -55,6 +53,8 @@ class Match(models.Model):
         unique_together = (('tournament', 'round'),)
 
     def __str__(self):
+        if self.name is None:
+            return "Empty"
         return self.name
 
 

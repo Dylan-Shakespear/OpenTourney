@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block body %}
 <h1>{{ tourney.name }}</h1>
 <div class="bracket">
@@ -27,13 +28,15 @@
         {% if forloop.counter0 == 7 %}
             <div class="round round-eight">
         {% endif %}
-        {% for match in round.matches %}
-            <button class="matchup btn">
-                <div class="team team-top">{{ match.team_1 }}</div>
-                <div class="team team-bottom">{{ match.team_2 }}</div>
+        {% for match_util in round.matches %}
+            <!-- This is using the match util, not the match model. See utils.py -->
+            <button data-matchid="{{ match_util.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn">
+                <div class="team team-top">{{ match_util.team_1 }}</div>
+                <div class="team team-bottom">{{ match_util.team_2 }}</div>
             </button>
         {% endfor %}
         </div>
     {% endfor %}
 </div>
+<script src="{% static 'tourney.js' %}"></script>
 {% endblock %}
