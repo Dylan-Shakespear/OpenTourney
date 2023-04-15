@@ -10,7 +10,15 @@
         {% endif %}
         <p class="card-text">{{ tourney.desc }}</p>
         <p class="card-text">Number of Teams: {{ tourney.num_teams }} - Tournament Type: {{ tourney.tournament_type }}</p>
-        <a href="{% url 'tourney' tourney.id %}" class="btn btn-primary">Open</a>
+        <div class="button-group-horizontal">
+            <a href="{% url 'tourney' tourney.id %}" class="btn btn-primary listing-btn">Open</a>
+            {% if user.is_authenticated and user == tourney.user %}
+            <form method="POST" action="{% url 'delete_tourney' tourney.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger listing-btn">Delete</button>
+            </form>
+            {% endif %}
+        </div>
     </div>
 </div>
 {% endfor %}

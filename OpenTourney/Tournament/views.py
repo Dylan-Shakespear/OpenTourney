@@ -1,7 +1,7 @@
 import sys
 
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import TournamentObject, Match, Team
 from .utils import Rounds, calculate_next_round, clear_following_round
 
@@ -168,3 +168,10 @@ def edit_match(request, match_not_unique_id, tourney_id):
         'team2_id': team2_id,
     }
     return render(request, 'Tournament/editmatch.html', context)
+
+
+def delete_tourney(request, tourney_id):
+    tourney_obj = get_object_or_404(TournamentObject, pk=tourney_id)
+    if tourney_obj.user == request.user:
+        tourney_obj.delete()
+        return tourney_listings(request)

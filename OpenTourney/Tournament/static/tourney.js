@@ -38,7 +38,7 @@ function matchInfo(event) {
     });
 }
 
-let match_buttons = document.querySelectorAll('.matchup');
+let match_buttons = document.querySelectorAll('.matchup_click');
 
 for (match_button of match_buttons) {
     match_button.addEventListener('click', matchInfo);

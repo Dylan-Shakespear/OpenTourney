@@ -1,28 +1,22 @@
 <div class="container">
-    <h1>{{ tourney_id }}</h1>
+    <h1 class="text-center">Match #{{ match_id }}</h1>
     <form class="m-3" method="post">
         {% csrf_token %}
         <input type="hidden" id="tourney_id" name="tourney_id" value="{{ tourney_id }}">
         <input type="hidden" id="match_id" name="match_id" value="{{ match_id }}">
         <input type="hidden" id="team1_id" name="team1_id" value="{{ team1_id }}">
         <input type="hidden" id="team2_id" name="team2_id" value="{{ team2_id }}">
-        <div class="form-group">
-            <input type="text" name="edit-names-1" id="edit-names-1" class="form-control" value="{{ team1 }}" required>
-            <input type="text" name="edit-names-2" id="edit-names-2" class="form-control" value="{{ team2 }}" required>
+        <div class="form-group-horizontal">
+            <input type="text" name="edit-names-1" id="edit-names-1" class="form-control form-group-name" value="{{ team1 }}" required>
+            <input class="form-check-input" type="radio" value="team1" id="team1" name="winner">
         </div>
-        <div class="form-group">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="team1" id="team1" name="winner">
-                <label class="form-check-label" for="team1">Top Team</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="team2" id="team2" name="winner">
-                <label class="form-check-label" for="team2">Bottom Team</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="none" id="none" name="winner" checked="checked">
-                <label class="form-check-label" for="team2">Do Not Change</label>
-            </div>
+        <div class="form-group-horizontal">
+            <input type="text" name="edit-names-2" id="edit-names-2" class="form-control form-group-name" value="{{ team2 }}" required>
+            <input class="form-check-input ml-5" type="radio" value="team2" id="team2" name="winner">
+        </div>
+        <div class="form-group-horizontal">
+            <label class="form-check-label form-group-name" for="team2">Do Not Change Winner</label>
+            <input class="form-check-input ml-5" type="radio" value="none" id="none" name="winner" checked="checked">
         </div>
         <button type="submit" class="btn btn-primary">Save</button>
     </form>

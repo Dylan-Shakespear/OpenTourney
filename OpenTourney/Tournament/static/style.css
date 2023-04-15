@@ -107,8 +107,8 @@ body {
 }
 
 .form-inline .form-group {
-  display: inline-block;
-  margin-right: 10px;
+    display: inline-block;
+    margin-right: 10px;
 }
 
 .form-inline.flex-fill {
@@ -130,6 +130,33 @@ body {
     overflow-y: auto;
 }
 
+.form-group-horizontal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.button-group-horizontal {
+    display: flex;
+    align-items: left;
+}
+
+.listing-btn {
+    margin-right: 15px;
+    min-width: 150px;
+}
+
+.form-group-name {
+    margin-right: 20px;
+}
+
+.modal-dialog {
+    position: fixed;
+    top: 30%;
+    transform: translate(-50%, -50%);
+}
+
 /* Page Transition Animation CSS */
 
 #animation-page {
@@ -149,8 +176,3 @@ body {
     opacity: 1;
 }
 
-.modal-dialog {
-  position: fixed;
-  top: 30%;
-  transform: translate(-50%, -50%);
-}
