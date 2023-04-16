@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from .models import TournamentObject, Match, Team
 from .utils import Rounds, calculate_next_round, clear_following_round
+from django.core.paginator import Paginator
 
 
 def home(request):
@@ -128,12 +129,13 @@ def tourney_listings(request):
              Q(description__icontains=query)) & (
                     Q(user=request.user) |
                     Q(public=True)))
-
+    paginator = Paginator(tourneys, 12)
+    page = request.GET.get('page')
+    tourneys = paginator.get_page(page)
     return render(request, 'Tournament/listings.html', {'tourneys': tourneys})
 
 
 def edit_match(request, match_not_unique_id, tourney_id):
-
     this_tourney = TournamentObject.objects.get(pk=tourney_id)
     team1_id = "-1"
     team2_id = "-1"

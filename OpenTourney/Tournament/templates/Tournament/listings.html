@@ -1,26 +1,69 @@
-{% extends "base.html" %} {% block body %}
-{% for tourney in tourneys %}
-<div class="card" style="width: 40vw;">
-    <div class="card-body">
-        <h4 class="card-title">{{ tourney.name }}</h4>
-        {% if tourney.public %}
-            <h5>Public</h5>
-        {% else %}
-            <h5>Private</h5>
-        {% endif %}
-        <p class="card-text">{{ tourney.desc }}</p>
-        <p class="card-text">Number of Teams: {{ tourney.num_teams }} - Tournament Type: {{ tourney.tournament_type }}</p>
-        <div class="button-group-horizontal">
-            <a href="{% url 'tourney' tourney.id %}" class="btn btn-primary listing-btn">Open</a>
-            {% if user.is_authenticated and user == tourney.user %}
-            <form method="POST" action="{% url 'delete_tourney' tourney.id %}">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-danger listing-btn">Delete</button>
-            </form>
+{% extends "base.html" %}
+{% block body %}
+
+<div class="text-center mb-3 mt-1">
+    {% if tourneys.has_previous %}
+        <a class="btn btn-outline-dark" href="?page=1">First</a>
+        <a class="btn btn-outline-dark" href="?page={{ book_model.previous_page_number }}">Previous</a>
+    {% else %}
+        <button class="btn btn-outline-dark" disabled>First</button>
+        <button class="btn btn-outline-dark" disabled>Previous</button>
+    {% endif %}
+
+    Page: {{ tourneys.number }} of {{ tourneys.paginator.num_pages }}
+
+    {% if tourneys.has_next %}
+        <a class="btn btn-outline-dark" href="?page={{ book_model.next_page_number }}">Next</a>
+        <a class="btn btn-outline-dark" href="?page={{ book_model.paginator.num_pages }}">Last</a>
+    {% else %}
+        <button class="btn btn-outline-dark" disabled>Next</button>
+        <button class="btn btn-outline-dark" disabled>Last</button>
+    {% endif %}
+</div>
+
+<div class="grid-container">
+    {% for tourney in tourneys %}
+    <div class="card">
+        <div class="card-body">
+            <h4 class="card-title">{{ tourney.name }}</h4>
+            {% if tourney.public %}
+                <h5>Public</h5>
+            {% else %}
+                <h5>Private</h5>
             {% endif %}
+            <p class="card-text">{{ tourney.desc }}</p>
+            <p class="card-text">Number of Teams: {{ tourney.num_teams }} - Tournament Type: {{ tourney.tournament_type }}</p>
+            <div class="button-group-horizontal">
+                <a href="{% url 'tourney' tourney.id %}" class="btn btn-primary listing-btn page-animation">Open</a>
+                {% if user.is_authenticated and user == tourney.user %}
+                <form method="POST" action="{% url 'delete_tourney' tourney.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger listing-btn">Delete</button>
+                </form>
+                {% endif %}
+            </div>
         </div>
     </div>
+    {% endfor %}
 </div>
-{% endfor %}
-{% endblock %}
 
+<div class="text-center mt-3 mb-1">
+    {% if tourneys.has_previous %}
+        <a class="btn btn-outline-dark" href="?page=1">First</a>
+        <a class="btn btn-outline-dark" href="?page={{ book_model.previous_page_number }}">Previous</a>
+    {% else %}
+        <button class="btn btn-outline-dark" disabled>First</button>
+        <button class="btn btn-outline-dark" disabled>Previous</button>
+    {% endif %}
+
+    Page: {{ tourneys.number }} of {{ tourneys.paginator.num_pages }}
+
+    {% if tourneys.has_next %}
+        <a class="btn btn-outline-dark" href="?page={{ book_model.next_page_number }}">Next</a>
+        <a class="btn btn-outline-dark" href="?page={{ book_model.paginator.num_pages }}">Last</a>
+    {% else %}
+        <button class="btn btn-outline-dark" disabled>Next</button>
+        <button class="btn btn-outline-dark" disabled>Last</button>
+    {% endif %}
+</div>
+{% endblock %}

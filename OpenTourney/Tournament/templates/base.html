@@ -19,17 +19,17 @@
 <!-- Navbar -->
 <nav class="navbar background-dark bg-dark navbar-expand-lg bg-body-tertiary" data-bs-theme="dark">
     <div class="container-fluid">
-         <a class="nav-link" href="{% url 'index' %}"><img class="nav-logo" src="{% static 'images/NavIcon.png' %}" height="50"/></a>
+         <a class="nav-link page-animation" href="{% url 'index' %}"><img class="nav-logo" src="{% static 'images/NavIcon.png' %}" height="50"/></a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'listings' %}">Tournaments</a>
+                    <a class="nav-link page-animation" href="{% url 'listings' %}">Tournaments</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="{% url 'new' %}">New Tourney</a>
+                    <a class="nav-link page-animation" href="{% url 'new' %}">New Tourney</a>
                 </li>
             </ul>
             <form class="form-inline nav-form" action="{% url 'listings' %}" method="GET">
@@ -40,10 +40,10 @@
             </form>
             <ul class="navbar-nav mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Settings</a>
+                    <a class="nav-link page-animation" href="#">Settings</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Account</a>
+                    <a class="nav-link page-animation" href="#">Account</a>
                 </li>
             </ul>
         </div>

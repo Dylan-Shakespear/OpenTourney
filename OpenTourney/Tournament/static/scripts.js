@@ -1,5 +1,5 @@
 // JavaScript code for page switching animation
-$(document).on('click', 'a', function(event) {
+$(document).on('click', 'a.page-animation', function(event) {
     event.preventDefault();
     var url = $(this).attr('href');
     var currentUrl = window.location.href.replace(location.origin, '');

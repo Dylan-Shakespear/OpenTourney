@@ -69,8 +69,6 @@
     margin-right: 15px;
 }
 
-
-
 .team {
     display: flex;
     justify-content: center;
@@ -144,7 +142,7 @@ body {
 
 .listing-btn {
     margin-right: 15px;
-    min-width: 150px;
+    min-width: 125px;
 }
 
 .form-group-name {
@@ -155,6 +153,16 @@ body {
     position: fixed;
     top: 30%;
     transform: translate(-50%, -50%);
+}
+
+.btn-outline-dark {
+    min-width: 80px;
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-gap: 20px;
 }
 
 /* Page Transition Animation CSS */
