@@ -175,10 +175,12 @@ body {
     transform: translateY(100%);
     opacity: 0;
 }
+
 #animation-page.in {
     transform: translateY(-100%);
     opacity: 0;
 }
+
 #animation-page.show {
     transform: translateY(0%);
     opacity: 1;

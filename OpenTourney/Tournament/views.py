@@ -5,6 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from .models import TournamentObject, Match, Team
 from .utils import Rounds, calculate_next_round, clear_following_round
 from django.core.paginator import Paginator
+from django.core.exceptions import PermissionDenied
 
 
 def home(request):
@@ -21,9 +22,12 @@ def tourney_main(request, tourney_id):
 
     if request.method == 'POST':
         # Updates Match
-        # TODO: Validate User
         tourney_id = int(request.POST.get('tourney_id', ''))
         tourney_obj = TournamentObject.objects.get(pk=tourney_id)
+
+        # User Validation
+        if tourney_obj.user != request.user:
+            raise PermissionDenied("You are not authorized to edit this tournament.")
 
         # Team 1 - Create/Edit - Name
         team1 = request.POST.get('edit-names-1', '')
@@ -85,6 +89,11 @@ def tourney_main(request, tourney_id):
 
     # Retrieves the Tournament selected
     this_tourney = TournamentObject.objects.get(pk=tourney_id)
+
+    # User Validation
+    if this_tourney.user != request.user and this_tourney.public is False:
+        raise PermissionDenied("You are not authorized to view this tournament.")
+
     # Uses a util to generate the rounds to be displayed
     # Needs to be done here and not in the html file
     rounds = Rounds(this_tourney)
@@ -177,3 +186,5 @@ def delete_tourney(request, tourney_id):
     if tourney_obj.user == request.user:
         tourney_obj.delete()
         return tourney_listings(request)
+    else:
+        raise PermissionDenied("You are not authorized to delete this tournament.")
