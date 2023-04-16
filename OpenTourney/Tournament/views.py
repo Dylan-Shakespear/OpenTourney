@@ -6,6 +6,8 @@ from .models import TournamentObject, Match, Team
 from .utils import Rounds, calculate_next_round, clear_following_round
 from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
 
 
 def home(request):
@@ -19,7 +21,6 @@ def tourney(request):
 
 # This is the actual tournament view
 def tourney_main(request, tourney_id):
-
     if request.method == 'POST':
         # Updates Match
         tourney_id = int(request.POST.get('tourney_id', ''))
@@ -188,3 +189,22 @@ def delete_tourney(request, tourney_id):
         return tourney_listings(request)
     else:
         raise PermissionDenied("You are not authorized to delete this tournament.")
+
+
+def profile(request):
+    if request.user.is_authenticated:
+        return render(request, 'Tournament/profile.html', {})
+    else:
+        # TODO: Redirect to login
+        pass
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'register.html', {'form': form})

@@ -42,9 +42,15 @@
                 <li class="nav-item">
                     <a class="nav-link page-animation" href="#">Settings</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="nav-item">
-                    <a class="nav-link page-animation" href="#">Account</a>
+                    <a class="nav-link page-animation" href="{% url 'profile' %}">{{ user.username }}</a>
                 </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link page-animation" href="{% url 'login' %}">Login</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
