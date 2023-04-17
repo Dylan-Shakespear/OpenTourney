@@ -63,6 +63,12 @@ def tourney_main(request, tourney_id):
             match_obj = Match(tournament=tourney_obj, round=match_id)
         match_obj.team1 = team1_obj
         match_obj.team2 = team2_obj
+        try:
+            print(request.POST.get('match_date', ''))
+            match_obj.date = request.POST.get('match_date', '')
+            print("Got Date")
+        except:
+            pass
         match_obj.save()
 
         # Update Next Round
@@ -169,6 +175,8 @@ def edit_match(request, match_not_unique_id, tourney_id):
         team1 = "To Be Determined"
         team2 = "To Be Determined"
 
+    date = 0
+
     try:
         this_match = Match.objects.get(tournament=this_tourney, round=match_not_unique_id)
         if this_match.team1 is not None:
@@ -177,6 +185,7 @@ def edit_match(request, match_not_unique_id, tourney_id):
         if this_match.team2 is not None:
             team2 = this_match.team2.name
             team2_id = this_match.team2.id
+        date = this_match.date
     except Match.DoesNotExist:
         pass
 
@@ -187,6 +196,7 @@ def edit_match(request, match_not_unique_id, tourney_id):
         'team2': team2,
         'team1_id': team1_id,
         'team2_id': team2_id,
+        'date': date,
     }
     return render(request, 'Tournament/editmatch.html', context)
 
