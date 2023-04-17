@@ -2,6 +2,8 @@ import sys
 
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
+from django.urls import reverse
+
 from .models import TournamentObject, Match, Team
 from .utils import Rounds, calculate_next_round, clear_following_round
 from django.core.paginator import Paginator
@@ -22,6 +24,9 @@ def tourney(request):
 # This is the actual tournament view
 def tourney_main(request, tourney_id):
     if request.method == 'POST':
+        if not request.user.is_authenticated:
+            return redirect('login')
+
         # Updates Match
         tourney_id = int(request.POST.get('tourney_id', ''))
         tourney_obj = TournamentObject.objects.get(pk=tourney_id)
@@ -108,6 +113,8 @@ def tourney_main(request, tourney_id):
 
 
 def new_tourney(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     if request.method == 'POST':
         # Creates a new tournament object with form
         name = request.POST.get('name', '')
@@ -131,6 +138,8 @@ def new_tourney(request):
 
 
 def tourney_listings(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
     tourneys = TournamentObject.objects.filter(user=request.user)
     query = request.GET.get('search')
     if query != '' and query is not None:
@@ -192,11 +201,9 @@ def delete_tourney(request, tourney_id):
 
 
 def profile(request):
-    if request.user.is_authenticated:
-        return render(request, 'Tournament/profile.html', {})
-    else:
-        # TODO: Redirect to login
-        pass
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return render(request, 'Tournament/profile.html', {})
 
 
 def register(request):
@@ -208,3 +215,26 @@ def register(request):
     else:
         form = UserCreationForm()
     return render(request, 'register.html', {'form': form})
+
+
+# This is the actual tournament view
+def edit_tourney(request, tourney_id):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    tourney_obj = TournamentObject.objects.get(pk=tourney_id)
+    if request.method == 'POST':
+        tourney_obj.name = request.POST.get('tourney_name', '')
+        tourney_obj.description = request.POST.get('desc', '')
+        public_choice = request.POST.get('public', '')
+        if public_choice == "public":
+            tourney_obj.public = True
+        else:
+            tourney_obj.public = False
+        tourney_obj.save()
+        url = reverse('tourney', kwargs={'tourney_id': tourney_id})
+        return redirect(url)
+    else:
+        if tourney_obj.user == request.user:
+            return render(request, 'Tournament/edittourney.html', {'tourney': tourney_obj})
+        else:
+            raise PermissionDenied("You are not authorized to edit this tournament.")

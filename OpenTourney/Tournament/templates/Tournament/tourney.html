@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block body %}
-<h1>{{ tourney.name }}</h1>
+<h1>{{ tourney.name }} - {{tourney.user.username}}</h1>
 <div class="bracket">
     {% for round in rounds.rounds %}
         {% if forloop.counter0 == 0 %}
@@ -45,5 +45,8 @@
         </div>
     {% endfor %}
 </div>
+{% if tourney.user == user %}
+<a href="{% url 'edit' tourney.id %}" class="btn btn-primary mt-4 page-animation">Edit Tournament</a>
+{% endif %}
 <script src="{% static 'tourney.js' %}"></script>
 {% endblock %}

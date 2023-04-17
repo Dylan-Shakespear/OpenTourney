@@ -36,6 +36,7 @@
             <div class="button-group-horizontal">
                 <a href="{% url 'tourney' tourney.id %}" class="btn btn-primary listing-btn page-animation">Open</a>
                 {% if user.is_authenticated and user == tourney.user %}
+                <a href="{% url 'edit' tourney.id %}" class="btn btn-secondary listing-btn page-animation">Edit</a>
                 <form method="POST" action="{% url 'delete_tourney' tourney.id %}">
                     {% csrf_token %}
                     <button type="submit" class="btn btn-danger listing-btn">Delete</button>
