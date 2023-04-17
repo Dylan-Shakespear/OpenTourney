@@ -138,22 +138,32 @@ def new_tourney(request):
         created_tourney = TournamentObject(name=name, tournament_type=tournament_type, num_teams=teams,
                                            description=desc, public=public, user=request.user)
         created_tourney.save()
-
-        return tourney_main(request, created_tourney.id)
+        url = reverse('tourney', kwargs={'tourney_id': created_tourney.id})
+        return redirect(url)
     return render(request, 'Tournament/new.html', {})
 
 
 def tourney_listings(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    tourneys = TournamentObject.objects.filter(user=request.user)
+
     query = request.GET.get('search')
-    if query != '' and query is not None:
-        tourneys = TournamentObject.objects.filter(
-            (Q(name__icontains=query) |
-             Q(description__icontains=query)) & (
-                    Q(user=request.user) |
-                    Q(public=True)))
+    if query is None:
+        if not request.user.is_authenticated:
+            return redirect('login')
+        else:
+            tourneys = TournamentObject.objects.filter(user=request.user)
+            if not tourneys.exists():
+                return redirect('new')
+    else:
+        if request.user.is_authenticated:
+            tourneys = TournamentObject.objects.filter(
+                (Q(name__icontains=query) |
+                 Q(description__icontains=query)) & (
+                        Q(user=request.user) |
+                        Q(public=True)))
+        else:
+            tourneys = TournamentObject.objects.filter(
+                (Q(name__icontains=query) |
+                 Q(description__icontains=query)) & (Q(public=True)))
     paginator = Paginator(tourneys, 12)
     page = request.GET.get('page')
     tourneys = paginator.get_page(page)
