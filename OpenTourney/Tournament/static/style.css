@@ -1,3 +1,41 @@
+
+:root {
+    --primary: #41235e;
+    --primary-hover: #2c1840;
+    --secondary: #584678;
+    --secondary-hover: #362b4a;
+    --danger: #78173c;
+    --danger-hover: #4d0f26;
+}
+
+.btn {
+    border-radius: 0 !important;
+}
+
+.btn-primary, .btn-primary:active, .btn-primary:visited {
+    background-color: var(--primary) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-hover) !important;
+}
+
+.btn-secondary, .btn-secondary:active, .btn-secondary:visited {
+    background-color: var(--secondary) !important;
+}
+
+.btn-secondary:hover {
+    background-color: var(--secondary-hover) !important;
+}
+
+.btn-danger, .btn-danger:active, .btn-danger:visited {
+    background-color: var(--danger) !important;
+}
+
+.btn-danger:hover {
+    background-color: var(--danger-hover) !important;
+}
+
 .bracket {
     display: flex;
     flex-direction: row;
@@ -143,6 +181,10 @@ body {
 .listing-btn {
     margin-right: 15px;
     min-width: 75px;
+}
+
+.create-tourney-form > .form-group {
+    margin-bottom: 20px;
 }
 
 .form-group-name {

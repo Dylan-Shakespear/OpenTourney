@@ -1,21 +1,28 @@
 {% extends "base.html" %}
 {% block body %}
+
 <div class="container">
-    <form method="POST">
+    <h1 class="text-center my-5">Create New Tournament</h1>
+    <form class="create-tourney-form" method="POST">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="name">Tournament Name</label>
-            <input type="text" class="form-control" id="name" name="name">
+        <div class="form-group row">
+            <label for="name" class="col-sm-3 col-form-label">Tournament Name:</label>
+            <div class="col-sm-9">
+                <input type="text" class="form-control" id="name" name="name">
+            </div>
         </div>
-        <div class="form-group">
-            <label for="type">Tournament Type</label>
-            <select class="form-control" id="type" name="type">
-                <option value="single">Single Elimination</option>
-                <option value="double">Double Elimination</option>
-            </select>
+        <div class="form-group row">
+            <label for="type" class="col-sm-3 col-form-label">Tournament Type:</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="type" name="type">
+                    <option value="single">Single Elimination</option>
+                    <option value="double">Double Elimination</option>
+                </select>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="teams">Number of Teams</label>
+        <div class="form-group row">
+            <label for="teams" class="col-sm-3 col-form-label">Number of Teams:</label>
+            <div class="col-sm-9">
                 <select class="form-control" id="teams" name="teams">
                     <option value="2">2</option>
                     <option value="4">4</option>
@@ -23,22 +30,32 @@
                     <option value="16">16</option>
                     <option value="32">32</option>
                 </select>
-        </div>
-        <div class="form-group">
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="public" id="public" name="public">
-                <label class="form-check-label" for="public">Public project</label>
-            </div>
-            <div class="form-check">
-                <input class="form-check-input" type="radio" value="private" id="private" name="public">
-                <label class="form-check-label" for="private">Private project</label>
             </div>
         </div>
-        <div class="form-group">
-            <label for="desc">Tournament Description (Optional)</label>
-            <textarea class="form-control" id="desc" name="desc"></textarea>
+        <div class="form-group row">
+            <label class="col-sm-3">Tournament Visibility:</label>
+            <div class="col-sm-9">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="public" id="public" name="public">
+                    <label class="form-check-label" for="public">Public</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" value="private" id="private" name="public">
+                    <label class="form-check-label" for="private">Private</label>
+                </div>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary mt-2">Submit</button>
+        <div class="form-group row">
+            <label for="desc" class="col-sm-3 col-form-label">Tournament Description (Optional):</label>
+            <div class="col-sm-9">
+                <textarea class="form-control" id="desc" name="desc"></textarea>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+                <button type="submit" class="btn btn-primary mt-3">Create Tournament</button>
+            </div>
+        </div>
     </form>
 </div>
 {% endblock %}

@@ -39,9 +39,6 @@
                 <button type="submit" class="btn btn-outline-light">Search</button>
             </form>
             <ul class="navbar-nav mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link page-animation" href="#">Settings</a>
-                </li>
                 {% if user.is_authenticated %}
                 <li class="nav-item">
                     <a class="nav-link page-animation" href="{% url 'profile' %}">{{ user.username }}</a>
