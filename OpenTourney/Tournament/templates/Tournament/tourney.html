@@ -45,6 +45,87 @@
         </div>
     {% endfor %}
 </div>
+{% if tourney.tournament_type == "double" %}
+    <h1>Loser's Bracket</h1>
+    <div class="bracket">
+        {% for round in losers.rounds %}
+            {% if forloop.counter0 == 0 %}
+                <div class="round round-one">
+            {% endif %}
+            {% if forloop.counter0 == 1 %}
+                <div class="round round-one">
+            {% endif %}
+            {% if forloop.counter0 == 2 %}
+                <div class="round round-two">
+            {% endif %}
+            {% if forloop.counter0 == 3 %}
+                <div class="round round-two">
+            {% endif %}
+            {% if forloop.counter0 == 4 %}
+                <div class="round round-three">
+            {% endif %}
+            {% if forloop.counter0 == 5 %}
+                <div class="round round-three">
+            {% endif %}
+            {% if forloop.counter0 == 6 %}
+                <div class="round round-four">
+            {% endif %}
+            {% if forloop.counter0 == 7 %}
+                <div class="round round-four">
+            {% endif %}
+            {% if forloop.counter0 == 8 %}
+                <div class="round round-five">
+            {% endif %}
+            {% if forloop.counter0 == 9 %}
+                <div class="round round-five">
+            {% endif %}
+            {% if forloop.counter0 == 10 %}
+                <div class="round round-six">
+            {% endif %}
+            {% if forloop.counter0 == 11 %}
+                <div class="round round-six">
+            {% endif %}
+            {% if forloop.counter0 == 12 %}
+                <div class="round round-seven">
+            {% endif %}
+            {% if forloop.counter0 == 13 %}
+                <div class="round round-seven">
+            {% endif %}
+            {% if forloop.counter0 == 14 %}
+                <div class="round round-eight">
+            {% endif %}
+            {% for match_util in round.matches %}
+                <!-- This is using the match util, not the match model. See utils.py -->
+                {% if user.is_authenticated and user == tourney.user %}
+                <button data-matchid="{{ match_util.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
+                    <div class="team team-top">{{ match_util.team_1 }}</div>
+                    <div class="team team-bottom">{{ match_util.team_2 }}</div>
+                </button>
+                {% else %}
+                <div class="matchup btn">
+                    <div class="team team-top">{{ match_util.team_1 }}</div>
+                    <div class="team team-bottom">{{ match_util.team_2 }}</div>
+                </div>
+                {% endif %}
+            {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+    <h1>Grand Finals</h1>
+    {% if user.is_authenticated and user == tourney.user %}
+    <div class="bracket">
+        <button data-matchid="{{ losers.grand_final.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
+            <div class="team team-top">{{ losers.grand_final.team_1 }}</div>
+            <div class="team team-bottom">{{ losers.grand_final.team_2 }}</div>
+        </button>
+    </div>
+    {% else %}
+    <div class="matchup btn">
+        <div class="team team-top">{{ losers.grand_final.team_1 }}</div>
+        <div class="team team-bottom">{{ losers.grand_final.team_2 }}</div>
+    </div>
+    {% endif %}
+{% endif %}
 {% if tourney.user == user %}
 <a href="{% url 'edit' tourney.id %}" class="btn btn-primary mt-4 page-animation">Edit Tournament</a>
 {% endif %}

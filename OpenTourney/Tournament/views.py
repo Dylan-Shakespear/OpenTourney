@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from .models import TournamentObject, Match, Team
-from .utils import Rounds, calculate_next_round, clear_following_round
+from .utils import Rounds, LosersRounds, single_tourney_update_future_rounds, double_tourney_update_future_rounds
 from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.forms import UserCreationForm
@@ -63,41 +63,17 @@ def tourney_main(request, tourney_id):
             match_obj = Match(tournament=tourney_obj, round=match_id)
         match_obj.team1 = team1_obj
         match_obj.team2 = team2_obj
-        try:
-            print(request.POST.get('match_date', ''))
+        date = request.POST.get('match_date', '')
+        if date != '':
             match_obj.date = request.POST.get('match_date', '')
-            print("Got Date")
-        except:
-            pass
         match_obj.save()
 
         # Update Next Round
-        # If this is the last round, nothing is done
-        if match_id < tourney_obj.num_teams - 1:
-            winner = request.POST.get('winner', '')
-            if winner != "none":
-                # Calculates the match_id for the next round the winning team will be in
-                next_round = calculate_next_round(match_id, tourney_obj.num_teams)
-                try:
-                    next_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
-                except Match.DoesNotExist:
-                    next_match_obj = Match(tournament=tourney_obj, round=next_round)
-
-                if match_id % 2 == 0:
-                    # Evens are bottom for next round
-                    if winner == "team2":
-                        next_match_obj.team2 = team2_obj
-                    else:
-                        next_match_obj.team2 = team1_obj
-                else:
-                    # Odds are top for next round
-                    if winner == "team2":
-                        next_match_obj.team1 = team2_obj
-                    else:
-                        next_match_obj.team1 = team1_obj
-                next_match_obj.save()
-                # Clears following round(s) in case winner was changed and old winner got further in the tourney
-                clear_following_round(next_round, tourney_obj)
+        winner = request.POST.get('winner', '')
+        if tourney_obj.tournament_type == "single":
+            single_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj, team2_obj)
+        else:
+            double_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj, team2_obj)
 
     # Retrieves the Tournament selected
     this_tourney = TournamentObject.objects.get(pk=tourney_id)
@@ -110,10 +86,18 @@ def tourney_main(request, tourney_id):
     # Needs to be done here and not in the html file
     rounds = Rounds(this_tourney)
 
-    context = {
-        'tourney': this_tourney,
-        'rounds': rounds,
-    }
+    if this_tourney.tournament_type == "double":
+        loser_rounds = LosersRounds(this_tourney)
+        context = {
+            'tourney': this_tourney,
+            'rounds': rounds,
+            'losers': loser_rounds
+        }
+    else:
+        context = {
+            'tourney': this_tourney,
+            'rounds': rounds,
+        }
 
     return render(request, 'Tournament/tourney.html', context)
 
@@ -177,8 +161,8 @@ def edit_match(request, match_not_unique_id, tourney_id):
 
     # TODO: This copies from util.py. May be a better way to do this without duplicated code
     if match_not_unique_id < (this_tourney.num_teams / 2) + 1:
-        team1 = "Team ???"
-        team2 = "Team ???"
+        team1 = "Team " + str((match_not_unique_id - 1) * 2 + 1)
+        team2 = "Team " + str(match_not_unique_id * 2)
         # Figures out if user should be able to edit names
         # Names can only be edited from the first round, then they are auto-filled via winners
     else:
