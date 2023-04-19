@@ -8,6 +8,10 @@
     --danger-hover: #4d0f26;
 }
 
+.m-gone {
+    margin-bottom: 0px;
+}
+
 .btn {
     border-radius: 0 !important;
 }

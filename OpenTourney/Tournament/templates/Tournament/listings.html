@@ -27,12 +27,16 @@
         <div class="card-body">
             <h4 class="card-title">{{ tourney.name }}</h4>
             {% if tourney.public %}
-                <h5>Public</h5>
+                <h5>Public - {{ tourney.user.username }}</h5>
             {% else %}
-                <h5>Private</h5>
+                <h5>Private - {{ tourney.user.username }}</h5>
             {% endif %}
-            <p class="card-text">{{ tourney.desc }}</p>
-            <p class="card-text">Number of Teams: {{ tourney.num_teams }} - Tournament Type: {{ tourney.tournament_type }}</p>
+            <p class="m-gone">Number of Teams: {{ tourney.num_teams }}</p>
+            {% if tourney.tournament_type == single %}
+                <p>Tournament Type: Single Elimination</p>
+            {% else %}
+                <p>Tournament Type: Double Elimination</p>
+            {% endif %}
             <div class="button-group-horizontal">
                 <a href="{% url 'tourney' tourney.id %}" class="btn btn-primary listing-btn page-animation">Open</a>
                 {% if user.is_authenticated and user == tourney.user %}
