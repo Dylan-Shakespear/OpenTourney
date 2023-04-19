@@ -2,7 +2,7 @@
 <div class="row justify-content-center mt-4">
     <div class="col-md-6">
         <div class="card">
-            <div class="card-header bg-primary text-white">Login</div>
+            <div class="card-header bg-black text-white">Login</div>
             <div class="card-body">
                 <form method="post">
                     {% csrf_token %}
@@ -23,9 +23,19 @@
                         {{ form.remember_me.label_tag }}
                     </div>
                     <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="button" class="btn btn-secondary" onclick="fillDemoCredentials()">Demo Login</button>
                 </form>
             </div>
         </div>
     </div>
+    <div class="text-center form-group form-check mt-3">
+        Don't have an account? Register a new one <a class="page-animation" href="{% url 'register' %}">here</a>.
+    </div>
 </div>
+<script>
+    function fillDemoCredentials() {
+        document.getElementById("id_username").value = "Demo";
+        document.getElementById("id_password").value = "ioyQKdH*tN4pq6D3ig.X";
+    }
+</script>
 {% endblock %}

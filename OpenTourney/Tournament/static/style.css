@@ -40,6 +40,12 @@
     background-color: var(--danger-hover) !important;
 }
 
+.home-image {
+    border: 2px var(--primary) solid;
+    padding: 5px;
+    margin-bottom: 10px;
+}
+
 .bracket {
     display: flex;
     flex-direction: row;

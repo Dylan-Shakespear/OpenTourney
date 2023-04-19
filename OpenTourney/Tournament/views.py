@@ -212,7 +212,7 @@ def delete_tourney(request, tourney_id):
 def profile(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    return render(request, 'Tournament/profile.html', {})
+    return render(request, 'User/profile.html', {})
 
 
 def register(request):
@@ -223,7 +223,7 @@ def register(request):
             return redirect('login')
     else:
         form = UserCreationForm()
-    return render(request, 'register.html', {'form': form})
+    return render(request, 'User/register.html', {'form': form})
 
 
 def edit_tourney(request, tourney_id):

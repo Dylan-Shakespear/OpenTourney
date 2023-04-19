@@ -1,8 +1,8 @@
-{% extends "base.html" %} {% block body %}
+{% extends "base.html" %} {% load static %} {% block body %}
 <section class="jumbotron text-center mt-5">
     <div class="container">
         <h1 class="display-4">Welcome to OpenTourney</h1>
-        <p class="lead">Lorem Ipsum</p>
+        <p class="lead">Created by Dylan Shakespear</p>
         {% if user.is_authenticated %}
             <a class="page-animation btn btn-primary" href="{% url 'listings' %}">Your Tournaments</a>
             {% else %}
@@ -12,54 +12,77 @@
     </div>
 </section>
 
-<section class="py-5">
+<section class="pt-5">
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <h2>About OpenTourney</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, lacus sed rhoncus rutrum, nisl odio sollicitudin turpis, sit amet cursus enim velit et velit. Duis blandit turpis quam, vel malesuada quam semper ut.</p>
+                <p>OpenTourney uses a very simplistic display, allowing you to quickly create and edit
+                tournaments. Then, if the tournament is set to be public, others can view the tournament and see
+                information relating to the matches and dates posted for said matches. As of now there are 4 different
+                tournament sizes and 2 different tournament types.</p>
             </div>
             <div class="col-md-6">
                 <h2>Our Tournaments</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed auctor, lacus sed rhoncus rutrum, nisl odio sollicitudin turpis, sit amet cursus enim velit et velit. Duis blandit turpis quam, vel malesuada quam semper ut.</p>
+                <p>Anyone is able to view public tournaments on OpenTourney, and anyone who is logged in can quickly
+                create a new tournament and edit information relating to that tournament.</p>
             </div>
         </div>
     </div>
 </section>
 
-<section class="py-5">
-    <div class="container">
-        <div class="row mb-2">
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="...">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="...">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="...">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="...">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="...">
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card">
-                    <img src="https://via.placeholder.com/400x300" class="card-img-top" alt="...">
-                </div>
-            </div>
+<section class="py-3">
+    <div class="row align-items-center mb-4 py-1 bg-dark">
+        <div class="col-md-4">
+            <h3 class="text-center text-white mt-1">Search for "Public"</h3>
+            <img src="{% static 'images/search_public.png' %}" alt="Image 1" class="home-image img-fluid">
+        </div>
+        <div class="col-md-4 text-justify text-white">
+            <p>The search bar at the top will allow anyone visiting the page, whether logged in or not, to search
+            through all public tournaments and review those respective tournaments. If you are logged in, the search
+            will also expand to contain both all public tournaments and your private tournaments. When
+            logged in, you can also click the "Tournaments" link at the top of the page to view all your public and
+            private tournaments.</p>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center text-white mt-1">Demo "Tournaments" Tab</h3>
+            <img src="{% static 'images/search_private.png' %}" alt="Image 2" class="home-image img-fluid">
+        </div>
+    </div>
+    <div class="row align-items-center mb-4 py-1">
+        <div class="col-md-4">
+            <h3 class="text-center">Create Tournament</h3>
+            <img src="{% static 'images/create_tournament.png' %}" alt="Image 1" class="home-image img-fluid">
+        </div>
+        <div class="col-md-4 text-justify">
+            <p>When logged in, you can easily and quickly create a new tournament by clicking "New Tourney" at the top
+            of the page. Then, you can easily edit the name, description, and public/private setting later. When viewing
+            your tournament, you can click on any match to edit the player names, select which player has won the match,
+            and set a date for the match that anyone viewing the tournament can click on the match to see.</p>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center">Edit Match</h3>
+            <img src="{% static 'images/edit_match.png' %}" alt="Image 2" class="home-image img-fluid">
+        </div>
+    </div>
+    <div class="row align-items-center mb-4 py-1 bg-dark">
+        <div class="col-md-4">
+            <h3 class="text-center text-white mt-1">Single Elimination</h3>
+            <img src="{% static 'images/single_elimination.png' %}" alt="Image 1" class="home-image img-fluid">
+        </div>
+        <div class="col-md-4 text-justify text-white">
+            <p>Tournaments can be created with anywhere from 4 to 32 starting teams. Additionally, they can be
+            created in either the Single Elimination or Double Elimination style. In the Double Elimination style,
+            once a team loses, instead of disappearing from the tournament, they go to the loser's bracket. Upon losing
+            in the loser's bracket, they are finally done for good. At the end of the tournament, the winner of the
+            winner's bracket and the winner of the loser's bracket will play a game. Generally, if the winner of the
+            winner's bracket loses, an additional match will be held between them and the winner of the loser's bracket
+            since that would only be their first elimination. This is not visually reflected on the tournament display
+            but is assumed.</p>
+        </div>
+        <div class="col-md-4">
+            <h3 class="text-center text-white mt-1">Double Elimination</h3>
+            <img src="{% static 'images/double_elimination.png' %}" alt="Image 2" class="home-image img-fluid">
         </div>
     </div>
 </section>

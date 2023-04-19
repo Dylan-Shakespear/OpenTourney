@@ -28,8 +28,8 @@ urlpatterns = [
     path('tourney/edit_match/<int:match_not_unique_id>/<int:tourney_id>', tournament_views.edit_match, name="editmatch"),
     path('tourney/delete_tourney/<int:tourney_id>', tournament_views.delete_tourney, name="delete_tourney"),
     path('accounts/profile/', tournament_views.profile, name="profile"),
-    path('login/', auth_views.LoginView.as_view(template_name='login.html', form_class=tournament_forms.CustomLoginForm), name='login'),
-    path('logout/', auth_views.LogoutView.as_view(template_name='logout.html'), name='logout'),
+    path('login/', auth_views.LoginView.as_view(template_name='User/login.html', form_class=tournament_forms.CustomLoginForm), name='login'),
+    path('logout/', auth_views.LogoutView.as_view(template_name='User/logout.html'), name='logout'),
     path('register/', tournament_views.register, name='register'),
     path('tourney/<int:tourney_id>/edit', tournament_views.edit_tourney, name='edit'),
 ]

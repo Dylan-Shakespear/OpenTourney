@@ -1,5 +1,5 @@
 <div class="container">
-    <h1 class="text-center">Match #{{ match_id }}</h1>
+    <h1 class="text-center mt-2">Match #{{ match_id }}</h1>
     <form class="m-3" method="post">
         {% csrf_token %}
         {% if can_edit > 1 and user.is_authenticated and user == tourney_creator %}

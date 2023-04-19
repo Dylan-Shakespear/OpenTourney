@@ -4,7 +4,7 @@
 <div class="text-center mb-3 mt-1">
     {% if tourneys.has_previous %}
         <a class="btn btn-outline-dark" href="?page=1">First</a>
-        <a class="btn btn-outline-dark" href="?page={{ book_model.previous_page_number }}">Previous</a>
+        <a class="btn btn-outline-dark" href="?page={{ tourneys.previous_page_number }}">Previous</a>
     {% else %}
         <button class="btn btn-outline-dark" disabled>First</button>
         <button class="btn btn-outline-dark" disabled>Previous</button>
@@ -13,8 +13,8 @@
     Page: {{ tourneys.number }} of {{ tourneys.paginator.num_pages }}
 
     {% if tourneys.has_next %}
-        <a class="btn btn-outline-dark" href="?page={{ book_model.next_page_number }}">Next</a>
-        <a class="btn btn-outline-dark" href="?page={{ book_model.paginator.num_pages }}">Last</a>
+        <a class="btn btn-outline-dark" href="?page={{ tourneys.next_page_number }}">Next</a>
+        <a class="btn btn-outline-dark" href="?page={{ tourneys.paginator.num_pages }}">Last</a>
     {% else %}
         <button class="btn btn-outline-dark" disabled>Next</button>
         <button class="btn btn-outline-dark" disabled>Last</button>
@@ -55,7 +55,7 @@
 <div class="text-center mt-3 mb-1">
     {% if tourneys.has_previous %}
         <a class="btn btn-outline-dark" href="?page=1">First</a>
-        <a class="btn btn-outline-dark" href="?page={{ book_model.previous_page_number }}">Previous</a>
+        <a class="btn btn-outline-dark" href="?page={{ tourneys.previous_page_number }}">Previous</a>
     {% else %}
         <button class="btn btn-outline-dark" disabled>First</button>
         <button class="btn btn-outline-dark" disabled>Previous</button>
@@ -64,8 +64,8 @@
     Page: {{ tourneys.number }} of {{ tourneys.paginator.num_pages }}
 
     {% if tourneys.has_next %}
-        <a class="btn btn-outline-dark" href="?page={{ book_model.next_page_number }}">Next</a>
-        <a class="btn btn-outline-dark" href="?page={{ book_model.paginator.num_pages }}">Last</a>
+        <a class="btn btn-outline-dark" href="?page={{ tourneys.next_page_number }}">Next</a>
+        <a class="btn btn-outline-dark" href="?page={{ tourneys.paginator.num_pages }}">Last</a>
     {% else %}
         <button class="btn btn-outline-dark" disabled>Next</button>
         <button class="btn btn-outline-dark" disabled>Last</button>
