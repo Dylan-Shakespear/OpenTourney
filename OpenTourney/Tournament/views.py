@@ -24,6 +24,7 @@ def tourney(request):
 # This is the actual tournament view
 def tourney_main(request, tourney_id):
     if request.method == 'POST':
+        # POST for updating matches
         if not request.user.is_authenticated:
             return redirect('login')
 
@@ -55,7 +56,7 @@ def tourney_main(request, tourney_id):
             team2_obj = Team(name=team2, tournament=tourney_obj)
         team2_obj.save()
 
-        # Match - Create/Edit
+        # Match - Create/Edit model
         match_id = int(request.POST.get('match_id', ''))
         try:
             match_obj = Match.objects.get(tournament=tourney_obj, round=match_id)
@@ -159,13 +160,10 @@ def edit_match(request, match_not_unique_id, tourney_id):
     team1_id = "-1"
     team2_id = "-1"
 
-    # TODO: This copies from util.py. May be a better way to do this without duplicated code
     if match_not_unique_id < (this_tourney.num_teams / 2) + 1:
         team1 = "Team " + str((match_not_unique_id - 1) * 2 + 1)
         team2 = "Team " + str(match_not_unique_id * 2)
         can_edit = 2
-        # Figures out if user should be able to edit names
-        # Names can only be edited from the first round, then they are auto-filled via winners
     else:
         team1 = "To Be Determined"
         team2 = "To Be Determined"
@@ -173,6 +171,7 @@ def edit_match(request, match_not_unique_id, tourney_id):
 
     date = 0
 
+    # Determines is both opponents are chosen. If this is true, then the match can be edited
     try:
         this_match = Match.objects.get(tournament=this_tourney, round=match_not_unique_id)
         if this_match.team1 is not None:

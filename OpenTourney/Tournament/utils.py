@@ -1,4 +1,5 @@
 import math
+from django.core.exceptions import ObjectDoesNotExist
 from .models import Match
 
 
@@ -114,42 +115,29 @@ class TeamNames:
         self.match_util_round = match_util_round
 
 
+# Updates the next round where the winner appears
 def single_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj, team2_obj):
     # If this is the last round, nothing is done
     if match_id < tourney_obj.num_teams - 1 and winner != "none":
-        # Calculates the match_id for the next round the winning team will be in
+
         next_round = calculate_next_round(match_id, tourney_obj.num_teams)
-        try:
-            next_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
-        except Match.DoesNotExist:
-            next_match_obj = Match(tournament=tourney_obj, round=next_round)
+        next_match_obj = get_or_create_match(tourney_obj, next_round)
 
         if match_id % 2 == 0:
-            # Evens are bottom for next round
-            if winner == "team2":
-                next_match_obj.team2 = team2_obj
-            else:
-                next_match_obj.team2 = team1_obj
+            next_match_obj.team2 = team2_obj if winner == "team2" else team1_obj
         else:
-            # Odds are top for next round
-            if winner == "team2":
-                next_match_obj.team1 = team2_obj
-            else:
-                next_match_obj.team1 = team1_obj
+            next_match_obj.team1 = team2_obj if winner == "team2" else team1_obj
         next_match_obj.save()
-        # Clears following round(s) in case winner was changed and old winner got further in the tourney
         clear_following_round(next_round, tourney_obj)
 
 
+# Updates the next round where the winner and loser appear
 def double_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj, team2_obj):
     # If this is the last round, nothing is done
     if match_id < get_double_elim_max(tourney_obj.num_teams) and winner != "none":
         # Calculates the match_id for the next round the winning team will be in
         next_round = calculate_double_next_round(match_id, tourney_obj.num_teams)
-        try:
-            next_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
-        except Match.DoesNotExist:
-            next_match_obj = Match(tournament=tourney_obj, round=next_round)
+        next_match_obj = get_or_create_match(tourney_obj, next_round)
         if is_condense_round(match_id, tourney_obj.num_teams):
             # Normal round in winner's bracket
             # Or condensing round in loser's bracket
@@ -178,37 +166,42 @@ def double_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj
 
         # Going to Loser Bracket?
         loser_next_round = calculate_loser_next_round(match_id, tourney_obj.num_teams)
+
         if loser_next_round != -1:
-            try:
-                loser_match_obj = Match.objects.get(tournament=tourney_obj, round=loser_next_round)
-            except Match.DoesNotExist:
-                loser_match_obj = Match(tournament=tourney_obj, round=loser_next_round)
+            loser_match_obj = get_or_create_match(tourney_obj, loser_next_round)
 
             # Winners Bracket -> Losers Bracket is always top except in round 1
             if match_id <= tourney_obj.num_teams / 2:
                 # Round 1
                 if match_id % 2 == 0:
-                    # Evens are bottom for next round
+                    # Evens are bottom for Winners Bracket -> Losers Bracket in round 1
                     if winner == "team2":
                         loser_match_obj.team2 = team1_obj
                     else:
                         loser_match_obj.team2 = team2_obj
                 else:
-                    # Odds are top for next round
+                    # Odds are top for Winners Bracket -> Losers Bracket in round 1
                     if winner == "team2":
                         loser_match_obj.team1 = team1_obj
                     else:
                         loser_match_obj.team1 = team2_obj
             else:
-                # Other Rounds
+                # Other Rounds that aren't round 1
                 if winner == "team2":
                     loser_match_obj.team1 = team1_obj
                 else:
                     loser_match_obj.team1 = team2_obj
             loser_match_obj.save()
-            # Clears following round(s) in case winner was changed and old winner/old loser got further in the tourney
             clear_following_round_winning(next_round, tourney_obj)
             clear_following_round_losing(next_round, tourney_obj)
+
+
+# Gets or creates a match object for the given tournament and round
+def get_or_create_match(tournament, round):
+    try:
+        return Match.objects.get(tournament=tournament, round=round)
+    except Match.DoesNotExist:
+        return Match(tournament=tournament, round=round)
 
 
 # Returns the next round for single elimination
@@ -295,39 +288,95 @@ def calculate_loser_next_round(match_number, total):
 
 
 # Clears following rounds in case winner was changed and old winner got further in the tourney
-def clear_following_round(round, tourney_obj):
-    if round < tourney_obj.num_teams - 1:
-        next_round = calculate_next_round(round, tourney_obj.num_teams)
+def clear_following_round(match_id, tourney_obj):
+    if match_id < tourney_obj.num_teams - 1:
+        next_round = calculate_next_round(match_id, tourney_obj.num_teams)
         try:
             next_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
-            if round % 2 == 0:
+        except ObjectDoesNotExist:
+            # No next match object found, so we can't update it
+            return
+        if match_id % 2 == 0:
+            # Evens are bottom for next round
+            next_match_obj.team2 = None
+        else:
+            # Odds are top for next round
+            next_match_obj.team1 = None
+        # If we found a match here, there could be another future match they are in
+        next_match_obj.save()
+        clear_following_round(next_round, tourney_obj)
+
+
+def clear_following_round_winning(match_id, tourney_obj):
+    """
+        Updates the next match object for a given round in the tournament.
+        If the winner of the current round was changed and the old winner
+        got further in the tourney, clears the team(s) in the next match object.
+    """
+    if match_id < get_double_elim_max(tourney_obj.num_teams):
+        next_round = calculate_double_next_round(match_id, tourney_obj.num_teams)
+        try:
+            next_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
+        except ObjectDoesNotExist:
+            # No next match object found, so we can't update it
+            return
+        if match_id == tourney_obj.num_teams - 1:
+            next_match_obj.team1 = None
+        elif match_id == get_double_elim_max(tourney_obj.num_teams) - 1:
+            next_match_obj.team2 = None
+        elif is_condense_round(next_round, tourney_obj.num_teams):
+            # Normal round in winner's bracket or condensing round in loser's bracket
+            if (match_id > tourney_obj.num_teams and match_id % 2 == 1) or (
+                    match_id <= tourney_obj.num_teams and match_id % 2 == 0):
                 # Evens are bottom for next round
                 next_match_obj.team2 = None
             else:
                 # Odds are top for next round
                 next_match_obj.team1 = None
-            # If we found a match here, there could be another future match they are in
-            next_match_obj.save()
-            clear_following_round(next_round, tourney_obj)
-        except Match.DoesNotExist:
-            pass
+        else:
+            # The winner of this match won in the loser's bracket
+            # Next round will play a recent loser in the winner's bracket
+            # Will always be bottom
+            next_match_obj.team2 = None
+        next_match_obj.save()
+        # If we found a match here, there could be another future match they are in
+        clear_following_round_winning(next_round, tourney_obj)
+        clear_following_round_losing(next_round, tourney_obj)
 
 
-# Clears following rounds in case winner was changed and old winner got further in the tourney
-def clear_following_round_winning(round, tourney_obj):
-    if round < get_double_elim_max(tourney_obj.num_teams):
-        next_round = calculate_double_next_round(round, tourney_obj.num_teams)
+# Clears following rounds in case loser was changed and old loser got further in the tourney
+def clear_following_round_losing(match_id, tourney_obj):
+    if match_id < get_double_elim_max(tourney_obj.num_teams):
+        next_round = calculate_loser_next_round(match_id, tourney_obj.num_teams)
+        try:
+            loser_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
+        except ObjectDoesNotExist:
+            # No next match object found, so we can't update it
+            return
+        # Winners Bracket -> Losers Bracket is always top except in round 1
+        if match_id <= tourney_obj.num_teams / 2:
+            # Round 1
+            if match_id % 2 == 0:
+                loser_match_obj.team2 = None
+            else:
+                # Odds are top for next round
+                loser_match_obj.team1 = None
+        else:
+            # Other Rounds
+            loser_match_obj.team1 = None
+        loser_match_obj.save()
+        # Has to Clear the winning from here to use proper last round match id
         try:
             next_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
-            if round == tourney_obj.num_teams - 1:
+            if match_id == tourney_obj.num_teams - 1:
                 next_match_obj.team1 = None
-            elif round == get_double_elim_max(tourney_obj.num_teams) - 1:
+            elif match_id == get_double_elim_max(tourney_obj.num_teams) - 1:
                 next_match_obj.team2 = None
-            elif is_condense_round(next_round, tourney_obj.num_teams):
+            elif not is_condense_round(next_round, tourney_obj.num_teams):
                 # Normal round in winner's bracket
                 # Or condensing round in loser's bracket
-                if (round > tourney_obj.num_teams and round % 2 == 1) or (
-                        round <= tourney_obj.num_teams and round % 2 == 0):
+                if (match_id > tourney_obj.num_teams and match_id % 2 == 1) or (
+                        match_id <= tourney_obj.num_teams and match_id % 2 == 0):
                     # Evens are bottom for next round
                     next_match_obj.team2 = None
                 else:
@@ -339,61 +388,11 @@ def clear_following_round_winning(round, tourney_obj):
                 # Will always be bottom
                 next_match_obj.team2 = None
             next_match_obj.save()
-            # If we found a match here, there could be another future match they are in
-            clear_following_round_winning(next_round, tourney_obj)
-            clear_following_round_losing(next_round, tourney_obj)
-        except Match.DoesNotExist:
+        except ObjectDoesNotExist:
             pass
-
-
-# Clears following rounds in case loser was changed and old loser got further in the tourney
-def clear_following_round_losing(round, tourney_obj):
-    if round < get_double_elim_max(tourney_obj.num_teams):
-        next_round = calculate_loser_next_round(round, tourney_obj.num_teams)
-        try:
-            loser_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
-            # Winners Bracket -> Losers Bracket is always top except in round 1
-            if round <= tourney_obj.num_teams / 2:
-                # Round 1
-                if round % 2 == 0:
-                    loser_match_obj.team2 = None
-                else:
-                    # Odds are top for next round
-                    loser_match_obj.team1 = None
-            else:
-                # Other Rounds
-                loser_match_obj.team1 = None
-            loser_match_obj.save()
-            # Has to Clear the winning from here to use proper last round match id
-            try:
-                next_match_obj = Match.objects.get(tournament=tourney_obj, round=next_round)
-                if round == tourney_obj.num_teams - 1:
-                    next_match_obj.team1 = None
-                elif round == get_double_elim_max(tourney_obj.num_teams) - 1:
-                    next_match_obj.team2 = None
-                elif not is_condense_round(next_round, tourney_obj.num_teams):
-                    # Normal round in winner's bracket
-                    # Or condensing round in loser's bracket
-                    if (round > tourney_obj.num_teams and round % 2 == 1) or (
-                            round <= tourney_obj.num_teams and round % 2 == 0):
-                        # Evens are bottom for next round
-                        next_match_obj.team2 = None
-                    else:
-                        # Odds are top for next round
-                        next_match_obj.team1 = None
-                else:
-                    # The winner of this match won in the loser's bracket
-                    # Next round will play a recent loser in the winner's bracket
-                    # Will always be bottom
-                    next_match_obj.team2 = None
-                next_match_obj.save()
-            except Match.DoesNotExist:
-                pass
-            # If we found a match here, there could be another future match they are in
-            clear_following_round_losing(next_round, tourney_obj)
-            clear_following_round_winning(next_round, tourney_obj)
-        except Match.DoesNotExist:
-            pass
+        # If we found a match here, there could be another future match they are in
+        clear_following_round_losing(next_round, tourney_obj)
+        clear_following_round_winning(next_round, tourney_obj)
 
 
 def get_double_elim_max(size):
