@@ -163,11 +163,13 @@ def edit_match(request, match_not_unique_id, tourney_id):
     if match_not_unique_id < (this_tourney.num_teams / 2) + 1:
         team1 = "Team " + str((match_not_unique_id - 1) * 2 + 1)
         team2 = "Team " + str(match_not_unique_id * 2)
+        can_edit = 2
         # Figures out if user should be able to edit names
         # Names can only be edited from the first round, then they are auto-filled via winners
     else:
         team1 = "To Be Determined"
         team2 = "To Be Determined"
+        can_edit = 0
 
     date = 0
 
@@ -176,9 +178,11 @@ def edit_match(request, match_not_unique_id, tourney_id):
         if this_match.team1 is not None:
             team1 = this_match.team1.name
             team1_id = this_match.team1.id
+            can_edit += 1
         if this_match.team2 is not None:
             team2 = this_match.team2.name
             team2_id = this_match.team2.id
+            can_edit += 1
         date = this_match.date
     except Match.DoesNotExist:
         pass
@@ -191,6 +195,7 @@ def edit_match(request, match_not_unique_id, tourney_id):
         'team1_id': team1_id,
         'team2_id': team2_id,
         'date': date,
+        'can_edit': can_edit,
     }
     return render(request, 'Tournament/editmatch.html', context)
 
