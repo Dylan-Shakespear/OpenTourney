@@ -2,7 +2,7 @@
     <h1 class="text-center">Match #{{ match_id }}</h1>
     <form class="m-3" method="post">
         {% csrf_token %}
-        {% if can_edit > 1 %}
+        {% if can_edit > 1 and user.is_authenticated and user == tourney_creator %}
             <input type="hidden" id="tourney_id" name="tourney_id" value="{{ tourney_id }}">
             <input type="hidden" id="match_id" name="match_id" value="{{ match_id }}">
             <input type="hidden" id="team1_id" name="team1_id" value="{{ team1_id }}">
@@ -39,7 +39,9 @@
                 <label class="form-check-label form-group-name" for="match_date">Match Date:</label>
                 <input type="datetime-local" id="match_date" name="match_date" disabled>
             </div>
-            <p>You cannot edit a match until all participants have been determined.</p>
+            {% if user.is_authenticated and user == tourney_creator %}
+                <p>You cannot edit a match until all participants have been determined.</p>
+            {% endif %}
         {% endif %}
     </form>
 </div>

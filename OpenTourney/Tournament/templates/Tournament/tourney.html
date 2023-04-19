@@ -30,17 +30,10 @@
         {% endif %}
         {% for match_util in round.matches %}
             <!-- This is using the match util, not the match model. See utils.py -->
-            {% if user.is_authenticated and user == tourney.user %}
             <button data-matchid="{{ match_util.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
                 <div class="team team-top">{{ match_util.team_1 }}</div>
                 <div class="team team-bottom">{{ match_util.team_2 }}</div>
             </button>
-            {% else %}
-            <div class="matchup btn">
-                <div class="team team-top">{{ match_util.team_1 }}</div>
-                <div class="team team-bottom">{{ match_util.team_2 }}</div>
-            </div>
-            {% endif %}
         {% endfor %}
         </div>
     {% endfor %}
@@ -96,35 +89,21 @@
             {% endif %}
             {% for match_util in round.matches %}
                 <!-- This is using the match util, not the match model. See utils.py -->
-                {% if user.is_authenticated and user == tourney.user %}
                 <button data-matchid="{{ match_util.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
                     <div class="team team-top">{{ match_util.team_1 }}</div>
                     <div class="team team-bottom">{{ match_util.team_2 }}</div>
                 </button>
-                {% else %}
-                <div class="matchup btn">
-                    <div class="team team-top">{{ match_util.team_1 }}</div>
-                    <div class="team team-bottom">{{ match_util.team_2 }}</div>
-                </div>
-                {% endif %}
             {% endfor %}
             </div>
         {% endfor %}
     </div>
     <h1>Grand Finals</h1>
-    {% if user.is_authenticated and user == tourney.user %}
     <div class="bracket">
         <button data-matchid="{{ losers.grand_final.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
             <div class="team team-top">{{ losers.grand_final.team_1 }}</div>
             <div class="team team-bottom">{{ losers.grand_final.team_2 }}</div>
         </button>
     </div>
-    {% else %}
-    <div class="matchup btn">
-        <div class="team team-top">{{ losers.grand_final.team_1 }}</div>
-        <div class="team team-bottom">{{ losers.grand_final.team_2 }}</div>
-    </div>
-    {% endif %}
 {% endif %}
 {% if tourney.user == user %}
 <a href="{% url 'edit' tourney.id %}" class="btn btn-primary mt-4 page-animation">Edit Tournament</a>

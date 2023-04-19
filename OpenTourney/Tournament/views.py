@@ -188,6 +188,7 @@ def edit_match(request, match_not_unique_id, tourney_id):
 
     context = {
         'tourney_id': tourney_id,
+        'tourney_creator': this_tourney.user,
         'match_id': match_not_unique_id,
         'team1': team1,
         'team2': team2,
@@ -225,7 +226,6 @@ def register(request):
     return render(request, 'register.html', {'form': form})
 
 
-# This is the actual tournament view
 def edit_tourney(request, tourney_id):
     if not request.user.is_authenticated:
         return redirect('login')

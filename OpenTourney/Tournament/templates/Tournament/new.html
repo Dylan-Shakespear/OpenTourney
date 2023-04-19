@@ -8,13 +8,13 @@
         <div class="form-group row">
             <label for="name" class="col-sm-3 col-form-label">Tournament Name:</label>
             <div class="col-sm-9">
-                <input type="text" class="form-control" id="name" name="name">
+                <input type="text" class="form-control" id="name" name="name" required>
             </div>
         </div>
         <div class="form-group row">
             <label for="type" class="col-sm-3 col-form-label">Tournament Type:</label>
             <div class="col-sm-9">
-                <select class="form-control" id="type" name="type">
+                <select class="form-control" id="type" name="type" required>
                     <option value="single">Single Elimination</option>
                     <option value="double">Double Elimination</option>
                 </select>
@@ -23,8 +23,7 @@
         <div class="form-group row">
             <label for="teams" class="col-sm-3 col-form-label">Number of Teams:</label>
             <div class="col-sm-9">
-                <select class="form-control" id="teams" name="teams">
-                    <option value="2">2</option>
+                <select class="form-control" id="teams" name="teams" required>
                     <option value="4">4</option>
                     <option value="8">8</option>
                     <option value="16">16</option>
@@ -36,11 +35,11 @@
             <label class="col-sm-3">Tournament Visibility:</label>
             <div class="col-sm-9">
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" value="public" id="public" name="public">
+                    <input class="form-check-input" type="radio" value="public" id="public" name="public" required>
                     <label class="form-check-label" for="public">Public</label>
                 </div>
                 <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" value="private" id="private" name="public">
+                    <input class="form-check-input" type="radio" value="private" id="private" name="public" required>
                     <label class="form-check-label" for="private">Private</label>
                 </div>
             </div>
