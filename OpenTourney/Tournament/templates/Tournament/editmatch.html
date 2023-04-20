@@ -40,7 +40,7 @@
                 <input type="datetime-local" id="match_date" name="match_date" disabled>
             </div>
             {% if user.is_authenticated and user == tourney_creator %}
-                <p>You cannot edit a match until all participants have been determined.</p>
+                <p class="text-danger">You cannot edit a match until all participants have been determined.</p>
             {% endif %}
         {% endif %}
     </form>

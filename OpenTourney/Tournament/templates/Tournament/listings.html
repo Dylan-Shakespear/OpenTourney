@@ -3,10 +3,10 @@
 
 <div class="text-center mb-3 mt-1">
     {% if tourneys.has_previous %}
-        <a class="btn btn-outline-dark" href="?page=1">First</a>
+        <a class="btn btn-outline-dark d-none d-md-inline-block" href="?page=1">First</a>
         <a class="btn btn-outline-dark" href="?page={{ tourneys.previous_page_number }}">Previous</a>
     {% else %}
-        <button class="btn btn-outline-dark" disabled>First</button>
+        <button class="btn btn-outline-dark d-none d-md-inline-block" disabled>First</button>
         <button class="btn btn-outline-dark" disabled>Previous</button>
     {% endif %}
 
@@ -14,10 +14,10 @@
 
     {% if tourneys.has_next %}
         <a class="btn btn-outline-dark" href="?page={{ tourneys.next_page_number }}">Next</a>
-        <a class="btn btn-outline-dark" href="?page={{ tourneys.paginator.num_pages }}">Last</a>
+        <a class="btn btn-outline-dark d-none d-md-inline-block" href="?page={{ tourneys.paginator.num_pages }}">Last</a>
     {% else %}
         <button class="btn btn-outline-dark" disabled>Next</button>
-        <button class="btn btn-outline-dark" disabled>Last</button>
+        <button class="btn btn-outline-dark d-none d-md-inline-block" disabled>Last</button>
     {% endif %}
 </div>
 
