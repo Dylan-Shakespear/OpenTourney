@@ -43,7 +43,7 @@
                 <a href="{% url 'edit' tourney.id %}" class="btn btn-secondary listing-btn page-animation">Edit</a>
                 <form id="delete-form" method="POST" action="{% url 'delete_tourney' tourney.id %}">
                     {% csrf_token %}
-                    <button type="button" onclick="showConfirmDialog()" class="btn btn-danger listing-btn">Delete</button>
+                    <button type="button" onclick="showConfirmDialog({{tourney.id}})" class="btn btn-danger listing-btn">Delete</button>
                 </form>
                 {% endif %}
             </div>
@@ -73,11 +73,10 @@
 </div>
 
 <script>
-    function showConfirmDialog() {
+    function showConfirmDialog(tourney_id) {
         // display a confirmation dialog box
         if (confirm('Are you sure you want to delete this tournament?')) {
-            // if the user confirms, submit the form
-            document.getElementById('delete-form').submit();
+            window.location.href = "/tourney/delete_tourney/" + tourney_id;
         }
     }
 </script>

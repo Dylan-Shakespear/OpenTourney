@@ -209,7 +209,7 @@ def delete_tourney(request, tourney_id):
     tourney_obj = get_object_or_404(TournamentObject, pk=tourney_id)
     if tourney_obj.user == request.user:
         tourney_obj.delete()
-        return tourney_listings(request)
+        return redirect('listings')
     else:
         raise PermissionDenied("You are not authorized to delete this tournament.")
 

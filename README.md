@@ -2,6 +2,13 @@
 Open Tourney is an in-development web-based tournament manager built with Python (Django)
 
 # Setting up your local environment
+
+## Installs (Required)
+- Python3
+- Django
+- python-dotenv
+
+## Secret Key (Optional)
 Create a .env file in the project's root directory. Open the file and add the following line:
 `SECRET_KEY=mysecretkey`
 Replace `mysecretkey` with a secure and unique string of your choosing. You can use a tool like Django Secret Key 
