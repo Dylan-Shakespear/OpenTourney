@@ -107,12 +107,12 @@
     <div class="bracket">
         <button data-matchid="{{ losers.grand_final.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
             {% if losers.grand_final.winner == "top" %}
-                Winner
+                Winner (Top)
             {% endif %}
             <div class="team team-top">{{ losers.grand_final.team_1 }}</div>
             <div class="team team-bottom">{{ losers.grand_final.team_2 }}</div>
             {% if losers.grand_final.winner == "bottom" %}
-                Winner
+                Winner (Bottom)
             {% endif %}
         </button>
     </div>
