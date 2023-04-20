@@ -20,6 +20,7 @@ class Round:
     def __init__(self, tourney, rounds, count):
         self.matches = []
         for i in range(1, rounds + 1):
+            winner = "none"
             if count < (tourney.num_teams / 2) + 1:
                 # Round 1, these teams need to be named
                 arg1 = "Team " + str((count - 1) * 2 + 1)
@@ -35,11 +36,13 @@ class Round:
                     arg1 = this_match.team1.name
                 if this_match.team2 is not None:
                     arg2 = this_match.team2.name
+                if count == tourney.num_teams - 1:
+                    winner = tourney.winner
 
             except Match.DoesNotExist:
                 pass
 
-            self.matches.append(TeamNames(arg1, arg2, count))
+            self.matches.append(TeamNames(arg1, arg2, count, winner))
             count += 1
 
 
@@ -92,6 +95,7 @@ class GrandFinal:
         self.team_1 = "To Be Determined"
         self.team_2 = "To Be Determined"
         self.match_util_round = count
+        self.winner = tourney.winner
 
         try:
             this_match = Match.objects.get(tournament=tourney, round=count)
@@ -108,20 +112,26 @@ class TeamNames:
     team_1 = "Error"
     team_2 = "Error"
     match_util_round = -1
+    winner = "none"
 
-    def __init__(self, team_name_1, team_name_2, match_util_round):
+    def __init__(self, team_name_1, team_name_2, match_util_round, winner):
         self.team_1 = team_name_1
         self.team_2 = team_name_2
         self.match_util_round = match_util_round
+        self.winner = winner
 
 
 # Updates the next round where the winner appears
 def single_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj, team2_obj):
     # If this is the last round, nothing is done
     if match_id < tourney_obj.num_teams - 1 and winner != "none":
-
         next_round = calculate_next_round(match_id, tourney_obj.num_teams)
         next_match_obj = get_or_create_match(tourney_obj, next_round)
+
+        if next_round == tourney_obj.num_teams - 1:
+            # Clears tournament winner if participates of the finale changed
+            tourney_obj.winner = "none"
+            tourney_obj.save()
 
         if match_id % 2 == 0:
             next_match_obj.team2 = team2_obj if winner == "team2" else team1_obj
@@ -129,6 +139,13 @@ def single_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj
             next_match_obj.team1 = team2_obj if winner == "team2" else team1_obj
         next_match_obj.save()
         clear_following_round(next_round, tourney_obj)
+    elif match_id == tourney_obj.num_teams - 1 and winner != "none":
+        # Sets tournament winner
+        if winner == "team1":
+            tourney_obj.winner = "top"
+        else:
+            tourney_obj.winner = "bottom"
+        tourney_obj.save()
 
 
 # Updates the next round where the winner and loser appear
@@ -138,6 +155,12 @@ def double_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj
         # Calculates the match_id for the next round the winning team will be in
         next_round = calculate_double_next_round(match_id, tourney_obj.num_teams)
         next_match_obj = get_or_create_match(tourney_obj, next_round)
+
+        if next_round == get_double_elim_max(tourney_obj.num_teams):
+            # Clears tournament winner if participates of the finale changed
+            tourney_obj.winner = "none"
+            tourney_obj.save()
+
         if is_condense_round(match_id, tourney_obj.num_teams):
             # Normal round in winner's bracket
             # Or condensing round in loser's bracket
@@ -194,6 +217,13 @@ def double_tourney_update_future_rounds(match_id, tourney_obj, winner, team1_obj
             loser_match_obj.save()
             clear_following_round_winning(next_round, tourney_obj)
             clear_following_round_losing(next_round, tourney_obj)
+    elif match_id == get_double_elim_max(tourney_obj.num_teams) and winner != "none":
+        # Sets tournament winner
+        if winner == "team1":
+            tourney_obj.winner = "top"
+        else:
+            tourney_obj.winner = "bottom"
+        tourney_obj.save()
 
 
 # Gets or creates a match object for the given tournament and round
@@ -305,6 +335,9 @@ def clear_following_round(match_id, tourney_obj):
         # If we found a match here, there could be another future match they are in
         next_match_obj.save()
         clear_following_round(next_round, tourney_obj)
+    elif match_id == tourney_obj.num_teams - 1:
+        # Clears Tournament winner
+        tourney_obj.winner = "none"
 
 
 def clear_following_round_winning(match_id, tourney_obj):
@@ -342,6 +375,9 @@ def clear_following_round_winning(match_id, tourney_obj):
         # If we found a match here, there could be another future match they are in
         clear_following_round_winning(next_round, tourney_obj)
         clear_following_round_losing(next_round, tourney_obj)
+    elif match_id == get_double_elim_max(tourney_obj.num_teams):
+        # Clears Tournament winner
+        tourney_obj.winner = "none"
 
 
 # Clears following rounds in case loser was changed and old loser got further in the tourney

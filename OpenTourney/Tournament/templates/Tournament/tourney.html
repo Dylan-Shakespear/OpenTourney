@@ -31,8 +31,14 @@
         {% for match_util in round.matches %}
             <!-- This is using the match util, not the match model. See utils.py -->
             <button data-matchid="{{ match_util.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
+                {% if match_util.winner == "top" %}
+                Winner (Top)
+                {% endif %}
                 <div class="team team-top">{{ match_util.team_1 }}</div>
                 <div class="team team-bottom">{{ match_util.team_2 }}</div>
+                {% if match_util.winner == "bottom" %}
+                Winner (Bottom)
+                {% endif %}
             </button>
         {% endfor %}
         </div>
@@ -100,8 +106,14 @@
     <h1>Grand Finals</h1>
     <div class="bracket">
         <button data-matchid="{{ losers.grand_final.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
+            {% if losers.grand_final.winner == "top" %}
+                Winner
+            {% endif %}
             <div class="team team-top">{{ losers.grand_final.team_1 }}</div>
             <div class="team team-bottom">{{ losers.grand_final.team_2 }}</div>
+            {% if losers.grand_final.winner == "bottom" %}
+                Winner
+            {% endif %}
         </button>
     </div>
 {% endif %}
