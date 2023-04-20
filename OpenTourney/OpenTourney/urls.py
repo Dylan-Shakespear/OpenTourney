@@ -32,4 +32,5 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='User/logout.html'), name='logout'),
     path('register/', tournament_views.register, name='register'),
     path('tourney/<int:tourney_id>/edit', tournament_views.edit_tourney, name='edit'),
+    path('settings', tournament_views.settings, name='settings'),
 ]

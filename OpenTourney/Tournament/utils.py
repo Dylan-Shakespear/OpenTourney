@@ -1,6 +1,6 @@
 import math
 from django.core.exceptions import ObjectDoesNotExist
-from .models import Match
+from .models import Match, UserSettings
 
 
 class Rounds:
@@ -428,3 +428,11 @@ def is_condense_round(match_number, total):
         current_total += quarter_total
 
     return even_round
+
+
+# Gets or creates a match object for the given tournament and round
+def get_or_create_user_settings(user):
+    try:
+        return UserSettings.objects.get(user=user)
+    except UserSettings.DoesNotExist:
+        return UserSettings(user=user)

@@ -106,7 +106,9 @@
     </div>
 {% endif %}
 {% if tourney.user == user %}
-<a href="{% url 'edit' tourney.id %}" class="btn btn-primary mt-4 page-animation">Edit Tournament</a>
+<div class="bottom-button">
+    <a href="{% url 'edit' tourney.id %}" class="btn btn-primary mt-4 page-animation">Edit Tournament</a>
+</div>
 {% endif %}
 <script src="{% static 'tourney.js' %}"></script>
 {% endblock %}

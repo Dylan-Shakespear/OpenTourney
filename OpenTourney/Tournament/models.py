@@ -21,6 +21,8 @@ class TournamentObject(models.Model):
     tournament_type = models.CharField(max_length=2, choices=TOURNAMENT_TYPES, default=SINGLE_ELIMINATION)
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tourney')
     public = models.BooleanField(default=False)
+    archived = models.BooleanField(default=False)
+    winner = models.CharField(max_length=100, default="none")
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -58,3 +60,9 @@ class Match(models.Model):
         return self.name
 
 
+class UserSettings(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='settings')
+    tourney_display = models.CharField(max_length=255, null=True)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

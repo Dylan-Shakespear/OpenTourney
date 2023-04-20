@@ -5,7 +5,8 @@ from django.shortcuts import render, get_object_or_404
 from django.urls import reverse
 
 from .models import TournamentObject, Match, Team
-from .utils import Rounds, LosersRounds, single_tourney_update_future_rounds, double_tourney_update_future_rounds
+from .utils import Rounds, LosersRounds, single_tourney_update_future_rounds, double_tourney_update_future_rounds, \
+    get_or_create_user_settings
 from django.core.paginator import Paginator
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.forms import UserCreationForm
@@ -87,17 +88,21 @@ def tourney_main(request, tourney_id):
     # Needs to be done here and not in the html file
     rounds = Rounds(this_tourney)
 
+    user_settings = get_or_create_user_settings(request.user)
+
     if this_tourney.tournament_type == "double":
         loser_rounds = LosersRounds(this_tourney)
         context = {
             'tourney': this_tourney,
             'rounds': rounds,
-            'losers': loser_rounds
+            'losers': loser_rounds,
+            'style': user_settings.tourney_display,
         }
     else:
         context = {
             'tourney': this_tourney,
             'rounds': rounds,
+            'style': user_settings.tourney_display,
         }
 
     return render(request, 'Tournament/tourney.html', context)
@@ -209,23 +214,6 @@ def delete_tourney(request, tourney_id):
         raise PermissionDenied("You are not authorized to delete this tournament.")
 
 
-def profile(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    return render(request, 'User/profile.html', {})
-
-
-def register(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('login')
-    else:
-        form = UserCreationForm()
-    return render(request, 'User/register.html', {'form': form})
-
-
 def edit_tourney(request, tourney_id):
     if not request.user.is_authenticated:
         return redirect('login')
@@ -246,3 +234,30 @@ def edit_tourney(request, tourney_id):
             return render(request, 'Tournament/edittourney.html', {'tourney': tourney_obj})
         else:
             raise PermissionDenied("You are not authorized to edit this tournament.")
+
+
+def profile(request):
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return render(request, 'User/profile.html', {})
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('login')
+    else:
+        form = UserCreationForm()
+    return render(request, 'User/register.html', {'form': form})
+
+
+def settings(request):
+    user_settings = get_or_create_user_settings(request.user)
+
+    if request.method == 'POST':
+        display_setting = request.POST.get('display_setting', '')
+        user_settings.tourney_display = display_setting
+        user_settings.save()
+    return render(request, 'User/settings.html', {'style_setting': user_settings.tourney_display})

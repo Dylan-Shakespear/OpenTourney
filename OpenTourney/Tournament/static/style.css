@@ -18,6 +18,7 @@
 
 .btn-primary, .btn-primary:active, .btn-primary:visited {
     background-color: var(--primary) !important;
+    border-color: var(--primary) !important;
 }
 
 .btn-primary:hover {
@@ -45,6 +46,72 @@
     padding: 5px;
     margin-bottom: 10px;
 }
+
+/* Bracket Theme Styles */
+
+/* Import Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Sedgwick+Ave+Display&display=swap');
+
+/* Normal Theme */
+.normal-theme {
+    background-color: white;
+}
+
+/* Dark Theme */
+.dark-theme {
+    background-color: #2e2e2e;
+    padding: 5px;
+    color: white;
+}
+
+.dark-theme > .bracket > .matchup > .team,
+.dark-theme > .bracket > .round > .matchup > .team {
+    border: none;
+    background-color: #141414;
+    color: white;
+    border-radius: 10px;
+}
+
+.dark-theme > h1 {
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 4px black solid;
+    text-align: center;
+}
+
+.dark-theme > .bottom-button {
+    border-top: 4px black solid;
+    margin-top: 20px;
+}
+
+/* Medieval Theme */
+.med-theme {
+    font-family: 'Sedgwick Ave Display', cursive;
+    background-color: #bf8654;
+}
+
+.med-theme > .bracket {
+    color: white;
+    padding: 20px;
+}
+
+.med-theme > h1 {
+    color: white;
+    margin: 20px;
+    background-color: #422409;
+    text-align: center;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.med-theme > .bracket > .matchup > .team,
+.med-theme > .bracket > .round > .matchup > .team {
+    border: none;
+    background-color: #422409;
+    color: white;
+}
+
+/* Bracket Styles */
 
 .bracket {
     display: flex;
@@ -172,7 +239,6 @@ body {
     right: 10%;
     bottom: 0;
     padding: 20px;
-    background-color: white;
     overflow-y: auto;
 }
 

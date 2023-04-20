@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block body %}
+
+<div class="container">
+    <h1 class="text-center my-5">User Settings</h1>
+    <form class="create-tourney-form" method="POST">
+        {% csrf_token %}
+        <div class="form-group row">
+            <label for="display_setting" class="col-sm-3 col-form-label">Tournament Display Type:</label>
+            <div class="col-sm-9">
+                <select class="form-control" id="display_setting" name="display_setting" required>
+                    <option value="normal-theme"{% if style_setting == 'normal-theme' %} selected{% endif %}>OpenTourney Standard</option>
+                    <option value="dark-theme"{% if style_setting == 'dark-theme' %} selected{% endif %}>Dark Mode</option>
+                    <option value="med-theme"{% if style_setting == 'med-theme' %} selected{% endif %}>Medieval Mode</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group row">
+            <div class="offset-sm-3 col-sm-9">
+                <button type="submit" class="btn btn-primary mt-3">Save</button>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
