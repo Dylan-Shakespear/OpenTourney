@@ -21,6 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
+# Check if .env file exists
+if not os.path.isfile('.env'):
+    # If it doesn't exist, create an empty .env file
+    with open('.env', 'w') as f:
+        pass
+
 # Load environment variables from .env file
 load_dotenv()
 
