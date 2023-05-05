@@ -36,7 +36,8 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'mysecretkey')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['3.86.42.243', '127.0.0.1', 'opentourney.dylanshakespear.com']
+
+ALLOWED_HOSTS = ['3.86.42.243', 'opentourney.dylanshakespear.com']
 
 
 # Application definition
