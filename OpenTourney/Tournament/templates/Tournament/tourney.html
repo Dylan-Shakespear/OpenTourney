@@ -31,12 +31,12 @@
         {% for match_util in round.matches %}
             <!-- This is using the match util, not the match model. See utils.py -->
             <button data-matchid="{{ match_util.match_util_round }}" data-tourney_id="{{ tourney.id }}" class="matchup btn matchup_click">
-                {% if match_util.winner == "top" %}
+                {% if match_util.winner == "top" and tourney.tournament_type == "single" %}
                 Winner (Top)
                 {% endif %}
                 <div class="team team-top">{{ match_util.team_1 }}</div>
                 <div class="team team-bottom">{{ match_util.team_2 }}</div>
-                {% if match_util.winner == "bottom" %}
+                {% if match_util.winner == "bottom" and tourney.tournament_type == "single" %}
                 Winner (Bottom)
                 {% endif %}
             </button>
