@@ -27,6 +27,5 @@ jobs:
         pip install -r requirements.txt
     - name: Run Tests
       run: |
-        cd ..
-        ls
+        working-directory: ./OpenTourney/OpenTourney/
         python manage.py test
