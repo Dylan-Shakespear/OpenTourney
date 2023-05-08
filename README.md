@@ -8,15 +8,9 @@ To clone this repository, run the following command on your git enabled terminal
 git clone https://github.com/Dylan-Shakespear/OpenTourney.git
 ```
 
-Navigate into `OpenTourney/OpenTourney` Download python, pip, django, and dotenv
+Download the required dependencies by running this from the project's root file:
 ```bash
-sudo apt install python3-pip -y
-```
-```bash
-pip install django
-```
-```bash
-pip install python-dotenv
+pip install -r requirements.txt
 ```
 
 
